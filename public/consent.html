@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>同意書登録</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="page">
+
+  <div class="topbar">
+    <div class="app-title">🌿 いきいき治療院<span class="app-title-sub">同意書登録</span></div>
+  </div>
+
+  <div class="wizard-grid">
+
+    <div class="card">
+      <p class="card-heading"><span class="badge">1</span>種別をえらぶ</p>
+      <div class="field">
+        <div class="checkbox-group">
+          <label class="checkbox-row"><input type="radio" name="consentType" id="typeAnma" value="あん摩" />あん摩</label>
+          <label class="checkbox-row"><input type="radio" name="consentType" id="typeShinkyu" value="鍼灸" />鍼灸</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="card-heading"><span class="badge">2</span>利用者をえらぶ</p>
+
+      <div class="field">
+        <label class="field-label" for="nameSearch">🔍 名前検索（あいまい検索でOK）</label>
+        <input class="text-input" type="text" id="nameSearch" placeholder="例：やまだ" autocomplete="off" />
+      </div>
+
+      <div class="field">
+        <div id="searchResultList" class="user-list"></div>
+        <p class="field-hint" id="searchEmptyHint" hidden>該当する利用者が見つかりません。下から新規登録できます。</p>
+        <div class="pager" id="searchPager"></div>
+      </div>
+
+      <a class="add-event-button" href="user-new.html" target="_blank" rel="noopener" id="newUserLink">＋ 新規登録（見つからない場合）</a>
+    </div>
+
+    <div class="card" id="selectedUserCard" hidden>
+      <p class="card-heading"><span class="badge">3</span>同意書の内容を入力する</p>
+
+      <div class="field">
+        <label class="field-label">👤 名前</label>
+        <div class="selected-name-display" id="selectedNameDisplay">未選択</div>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="obtainedDate">📅 取得日</label>
+        <input class="date-input" type="date" id="obtainedDate" />
+      </div>
+
+      <div class="field">
+        <div class="field-label-row">
+          <label class="field-label" for="consentContent">📝 同意内容</label>
+          <label class="checkbox-row"><input type="checkbox" id="sameAsLastCheckbox" />前回と同じ</label>
+        </div>
+        <textarea class="textarea-input" id="consentContent" placeholder="同意内容を入力してください"></textarea>
+        <p class="field-hint" id="noLastHint" hidden>この利用者の過去の同意書がまだありません。</p>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="symptom">🩹 症状</label>
+        <textarea class="textarea-input" id="symptom" placeholder="症状を入力してください"></textarea>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="doctorSelect">🧑‍⚕️ 医師名</label>
+        <div class="facility-select-row">
+          <select class="select-input" id="doctorSelect"></select>
+          <button class="facility-add-button" type="button" id="newDoctorButton">＋ 新規登録</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">🗂 この利用者の同意書履歴</label>
+        <div id="consentHistoryList"></div>
+        <p class="field-hint" id="historyEmptyHint" hidden>まだ同意書の記録がありません。</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-card">
+    <button class="word-button" type="button" id="backButton">🏠 ホームに戻る</button>
+    <button class="send-button" type="button" id="saveButton">✅ この同意書を登録する</button>
+  </div>
+
+</div>
+
+<div class="sheet-overlay" id="newDoctorOverlay">
+  <div class="sheet-panel">
+    <div class="sheet-handle"></div>
+    <p class="card-heading">新規医師登録</p>
+    <div class="field">
+      <label class="field-label" for="newDoctorName">医師名<span class="required">必須</span></label>
+      <input class="text-input" type="text" id="newDoctorName" placeholder="例：田中 一郎" />
+    </div>
+    <div class="sheet-actions">
+      <button class="word-button" type="button" id="cancelNewDoctorButton">キャンセル</button>
+      <button class="send-button" type="button" id="saveNewDoctorButton">登録する</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  const PAGE_SIZE = 6;
+
+  async function apiGet(url) {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || "通信に失敗しました");
+    return res.json();
+  }
+
+  async function apiPost(url, body) {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || "通信に失敗しました");
+    return res.json();
+  }
+
+  let toastTimer = null;
+  function showToast(message) {
+    toast.textContent = message;
+    toast.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove("show"), 2500);
+  }
+
+  // ---- あいまい検索（ひらがな・カタカナ・空白を無視して部分一致） ----
+
+  function normalize(str) {
+    return str
+      .replace(/[ァ-ン]/g, (ch) => String.fromCharCode(ch.charCodeAt(0) - 0x60))
+      .replace(/\s+/g, "")
+      .toLowerCase();
+  }
+
+  function fuzzyMatch(query, target) {
+    if (!query) return true;
+    return normalize(target).includes(normalize(query));
+  }
+
+  // ---- 要素取得 ----
+
+  const typeAnma = document.getElementById("typeAnma");
+  const typeShinkyu = document.getElementById("typeShinkyu");
+  const nameSearch = document.getElementById("nameSearch");
+  const searchResultList = document.getElementById("searchResultList");
+  const searchEmptyHint = document.getElementById("searchEmptyHint");
+  const searchPager = document.getElementById("searchPager");
+  const newUserLink = document.getElementById("newUserLink");
+  const selectedUserCard = document.getElementById("selectedUserCard");
+  const selectedNameDisplay = document.getElementById("selectedNameDisplay");
+  const obtainedDate = document.getElementById("obtainedDate");
+  const consentContent = document.getElementById("consentContent");
+  const sameAsLastCheckbox = document.getElementById("sameAsLastCheckbox");
+  const noLastHint = document.getElementById("noLastHint");
+  const symptom = document.getElementById("symptom");
+  const doctorSelect = document.getElementById("doctorSelect");
+  const newDoctorButton = document.getElementById("newDoctorButton");
+  const consentHistoryList = document.getElementById("consentHistoryList");
+  const historyEmptyHint = document.getElementById("historyEmptyHint");
+  const saveButton = document.getElementById("saveButton");
+  const backButton = document.getElementById("backButton");
+  const toast = document.getElementById("toast");
+
+  const newDoctorOverlay = document.getElementById("newDoctorOverlay");
+  const newDoctorName = document.getElementById("newDoctorName");
+  const cancelNewDoctorButton = document.getElementById("cancelNewDoctorButton");
+  const saveNewDoctorButton = document.getElementById("saveNewDoctorButton");
+
+  // ---- 状態 ----
+
+  let users = [];
+  let doctors = [];
+  let selectedUser = null;
+  let userConsents = [];
+  let searchPage = 1;
+
+  function toDateInputValue(date) {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, "0");
+    const d = String(date.getDate()).padStart(2, "0");
+    return `${y}-${m}-${d}`;
+  }
+
+  obtainedDate.value = toDateInputValue(new Date());
+
+  // ---- 利用者検索・一覧（6件ずつページ送り） ----
+
+  async function loadUsers() {
+    try {
+      users = await apiGet("/api/users");
+    } catch (err) {
+      showToast(err.message);
+    }
+    renderSearchResults();
+  }
+
+  function createUserRow(user) {
+    const row = document.createElement("div");
+    row.className = "user-list-row" + (selectedUser && selectedUser.id === user.id ? " active" : "");
+    row.innerHTML = `
+      <div>
+        <div class="user-list-row-name">${user.name}</div>
+      </div>
+      <div class="user-list-row-check">✓ 選択中</div>
+    `;
+    row.addEventListener("click", () => selectUser(user));
+    return row;
+  }
+
+  function renderSearchResults() {
+    const query = nameSearch.value.trim();
+    const matched = users.filter((u) => fuzzyMatch(query, u.name));
+    const totalPages = Math.max(1, Math.ceil(matched.length / PAGE_SIZE));
+    if (searchPage > totalPages) searchPage = totalPages;
+
+    searchResultList.innerHTML = "";
+    const start = (searchPage - 1) * PAGE_SIZE;
+    matched.slice(start, start + PAGE_SIZE).forEach((user) => searchResultList.appendChild(createUserRow(user)));
+    searchEmptyHint.hidden = matched.length > 0;
+
+    searchPager.innerHTML = "";
+    if (totalPages > 1) {
+      for (let p = 1; p <= totalPages; p++) {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "pager-button" + (p === searchPage ? " active" : "");
+        btn.textContent = p;
+        btn.addEventListener("click", () => {
+          searchPage = p;
+          renderSearchResults();
+        });
+        searchPager.appendChild(btn);
+      }
+    }
+  }
+
+  nameSearch.addEventListener("input", () => {
+    searchPage = 1;
+    renderSearchResults();
+  });
+
+  newUserLink.addEventListener("click", () => {
+    const query = nameSearch.value.trim();
+    newUserLink.href = query ? `user-new.html?name=${encodeURIComponent(query)}` : "user-new.html";
+  });
+
+  // ---- 利用者の選択 ----
+
+  async function selectUser(user) {
+    selectedUser = user;
+    selectedUserCard.hidden = false;
+    selectedNameDisplay.textContent = user.name;
+    sameAsLastCheckbox.checked = false;
+    noLastHint.hidden = true;
+    renderSearchResults();
+    await loadUserConsents();
+  }
+
+  // ---- 同意書履歴（前回と同じ内容のコピー元にも使う） ----
+
+  function formatConsentTypes(c) {
+    return [c.anma ? "あん摩" : "", c.shinkyu ? "鍼灸" : ""].filter(Boolean).join("・");
+  }
+
+  async function loadUserConsents() {
+    consentHistoryList.innerHTML = '<p class="field-hint">読み込み中...</p>';
+    try {
+      userConsents = await apiGet(`/api/consents?userId=${encodeURIComponent(selectedUser.id)}`);
+    } catch (err) {
+      userConsents = [];
+      showToast(err.message);
+    }
+    consentHistoryList.innerHTML = "";
+    historyEmptyHint.hidden = userConsents.length > 0;
+    userConsents.forEach((c) => {
+      const row = document.createElement("div");
+      row.className = "record-row";
+      row.innerHTML = `
+        <div class="record-row-top">
+          <div class="record-row-name">${formatConsentTypes(c) || "種別未設定"}</div>
+          <div class="record-row-date">${c.obtainedDate}</div>
+        </div>
+        <div class="record-row-meta">${c.doctorName || "医師未設定"}${c.symptom ? `　|　${c.symptom}` : ""}</div>
+        ${c.content ? `<div class="record-row-note">${c.content}</div>` : ""}
+      `;
+      consentHistoryList.appendChild(row);
+    });
+  }
+
+  sameAsLastCheckbox.addEventListener("change", () => {
+    if (!sameAsLastCheckbox.checked) return;
+    const last = userConsents[0];
+    if (!last) {
+      sameAsLastCheckbox.checked = false;
+      noLastHint.hidden = false;
+      return;
+    }
+    noLastHint.hidden = true;
+    consentContent.value = last.content;
+  });
+
+  // ---- 医師の選択・新規登録 ----
+
+  function fillDoctorSelect() {
+    doctorSelect.innerHTML = "";
+    if (doctors.length === 0) {
+      const opt = document.createElement("option");
+      opt.value = "";
+      opt.textContent = "登録されている医師がいません";
+      doctorSelect.appendChild(opt);
+      return;
+    }
+    doctors.forEach((doctor) => {
+      const opt = document.createElement("option");
+      opt.value = doctor.name;
+      opt.textContent = doctor.name;
+      doctorSelect.appendChild(opt);
+    });
+  }
+
+  async function loadDoctors() {
+    try {
+      doctors = await apiGet("/api/doctors");
+    } catch (err) {
+      showToast(err.message);
+    }
+    fillDoctorSelect();
+  }
+
+  function openSheet(overlay) {
+    overlay.classList.add("open");
+  }
+
+  function closeSheet(overlay) {
+    overlay.classList.remove("open");
+  }
+
+  newDoctorButton.addEventListener("click", () => {
+    newDoctorName.value = "";
+    openSheet(newDoctorOverlay);
+    newDoctorName.focus();
+  });
+
+  cancelNewDoctorButton.addEventListener("click", () => closeSheet(newDoctorOverlay));
+
+  saveNewDoctorButton.addEventListener("click", async () => {
+    const name = newDoctorName.value.trim();
+    if (!name) {
+      newDoctorName.focus();
+      return;
+    }
+    saveNewDoctorButton.disabled = true;
+    try {
+      const doctor = await apiPost("/api/doctors", { name });
+      doctors.push(doctor);
+      fillDoctorSelect();
+      doctorSelect.value = doctor.name;
+      closeSheet(newDoctorOverlay);
+      showToast("医師を登録しました");
+    } catch (err) {
+      showToast(err.message);
+    } finally {
+      saveNewDoctorButton.disabled = false;
+    }
+  });
+
+  newDoctorOverlay.addEventListener("click", (e) => {
+    if (e.target === newDoctorOverlay) closeSheet(newDoctorOverlay);
+  });
+
+  // ---- 保存 ----
+
+  function resetForm() {
+    typeAnma.checked = false;
+    typeShinkyu.checked = false;
+    selectedUser = null;
+    userConsents = [];
+    selectedUserCard.hidden = true;
+    selectedNameDisplay.textContent = "未選択";
+    obtainedDate.value = toDateInputValue(new Date());
+    consentContent.value = "";
+    sameAsLastCheckbox.checked = false;
+    noLastHint.hidden = true;
+    symptom.value = "";
+    doctorSelect.selectedIndex = 0;
+    nameSearch.value = "";
+    searchPage = 1;
+    renderSearchResults();
+  }
+
+  backButton.addEventListener("click", () => {
+    if (window.opener) {
+      window.close();
+    } else {
+      location.href = "index.html";
+    }
+  });
+
+  saveButton.addEventListener("click", async () => {
+    if (!typeAnma.checked && !typeShinkyu.checked) {
+      showToast("あん摩・鍼灸のどちらかを選んでください");
+      return;
+    }
+    if (!selectedUser) {
+      showToast("利用者を選んでください");
+      return;
+    }
+    if (!obtainedDate.value) {
+      showToast("取得日を入力してください");
+      obtainedDate.focus();
+      return;
+    }
+
+    saveButton.disabled = true;
+    showToast("保存しています...");
+    try {
+      await apiPost("/api/consents", {
+        userId: selectedUser.id,
+        userName: selectedUser.name,
+        anma: typeAnma.checked,
+        shinkyu: typeShinkyu.checked,
+        obtainedDate: obtainedDate.value,
+        content: consentContent.value.trim(),
+        symptom: symptom.value.trim(),
+        doctorName: doctorSelect.value,
+      });
+      showToast("保存しました");
+      resetForm();
+    } catch (err) {
+      showToast(err.message);
+    } finally {
+      saveButton.disabled = false;
+    }
+  });
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") {
+      loadUsers();
+      loadDoctors();
+    }
+  });
+
+  // ---- 初回描画 ----
+
+  loadUsers();
+  loadDoctors();
+</script>
+</body>
+</html>

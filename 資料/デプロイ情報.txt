@@ -1,0 +1,32 @@
+いきいき治療院 記録アプリ／デプロイ情報
+====================================
+
+■ 公開URL（スマホ含めどこからでもアクセス可）
+https://ikiiki-chiryoin-819429436592.asia-northeast1.run.app
+
+■ アクセス制限
+現在は認証なし（URLを知っていれば誰でもアクセス可）。
+後で制限したくなったら「Cloud Run 認証」または「アプリ内パスワード」を追加できる。
+
+■ GCP情報
+プロジェクトID: ikiiki-508407
+リージョン: asia-northeast1（東京）
+サービス名: ikiiki-chiryoin
+サービスアカウント: ikiiki@ikiiki-508407.iam.gserviceaccount.com
+gcloudログインアカウント: abeeeeen1982@gmail.com
+
+■ 再デプロイのやり方
+コードを変更したら、このフォルダで以下を実行すると本番URLに反映される。
+
+gcloud run deploy ikiiki-chiryoin --source . --region=asia-northeast1 --service-account=ikiiki@ikiiki-508407.iam.gserviceaccount.com --env-vars-file=env-vars.yaml --project=ikiiki-508407
+
+※ gcloudコマンドがPATHに無い場合は先にこれを実行：
+$env:Path = "C:\Users\abeee\AppData\Local\Google\Cloud SDK\google-cloud-sdk\bin;" + $env:Path
+
+■ 環境変数
+env-vars.yaml に SPREADSHEET_ID と BUCKET_NAME を記載している（本番用）。
+ローカル開発用の値は .env に別途あり。
+
+■ 使っているGoogleサービス
+- Google Sheets（利用者・施設・治療院・施術師・記録のデータ保存）
+- Google Cloud Storage（バケット: ikiiki_g、写真の保存）

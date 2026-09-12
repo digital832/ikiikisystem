@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>治療院の新規登録</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="page">
+
+  <div class="topbar">
+    <div class="app-title">🌿 いきいき治療院<span class="app-title-sub">治療院の新規登録</span></div>
+    <div class="topbar-buttons">
+      <button class="topbar-back-button" type="button" id="headerBackButton">← 元のページにもどる</button>
+    </div>
+  </div>
+
+  <div class="wizard-grid">
+    <div class="card">
+      <p class="card-heading"><span class="badge">🏥</span>治療院を登録する</p>
+
+      <div class="field">
+        <label class="field-label" for="clinicName">治療院名<span class="required">必須</span></label>
+        <input class="text-input" type="text" id="clinicName" placeholder="例：いきいき治療院 下関" />
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="managerName">施術管理者名</label>
+        <input class="text-input" type="text" id="managerName" placeholder="例：吉田 敬一" />
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="address">住所</label>
+        <input class="text-input" type="text" id="address" placeholder="例：下関市一の宮住吉3丁目1-9-401号" />
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="phone">電話番号</label>
+        <input class="text-input" type="text" id="phone" inputmode="tel" placeholder="例：083-237-9115" />
+      </div>
+    </div>
+
+    <div class="card" id="clinicListCard">
+      <p class="card-heading"><span class="badge">📋</span>登録済みの治療院</p>
+      <div id="clinicList" class="user-list"></div>
+      <p class="field-hint" id="clinicListEmptyHint" hidden>まだ登録されている治療院はありません。</p>
+    </div>
+  </div>
+
+  <div class="footer-card">
+    <button class="word-button" type="button" id="backButton">← 戻る</button>
+    <button class="send-button" type="button" id="saveClinicButton">✅ この治療院を登録する</button>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  async function apiGet(url) {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || "通信に失敗しました");
+    return res.json();
+  }
+
+  async function apiPost(url, body) {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || "通信に失敗しました");
+    return res.json();
+  }
+
+  const clinicName = document.getElementById("clinicName");
+  const managerName = document.getElementById("managerName");
+  const address = document.getElementById("address");
+  const phone = document.getElementById("phone");
+  const backButton = document.getElementById("backButton");
+  const headerBackButton = document.getElementById("headerBackButton");
+  const saveClinicButton = document.getElementById("saveClinicButton");
+  const clinicList = document.getElementById("clinicList");
+  const clinicListEmptyHint = document.getElementById("clinicListEmptyHint");
+  const toast = document.getElementById("toast");
+
+  let toastTimer = null;
+  function showToast(message) {
+    toast.textContent = message;
+    toast.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove("show"), 2500);
+  }
+
+  async function renderClinicList() {
+    clinicList.innerHTML = '<p class="field-hint">読み込み中...</p>';
+    let clinics;
+    try {
+      clinics = await apiGet("/api/clinics");
+    } catch (err) {
+      clinicList.innerHTML = "";
+      showToast(err.message);
+      return;
+    }
+    clinicList.innerHTML = "";
+    clinicListEmptyHint.hidden = clinics.length > 0;
+    clinics.forEach((c) => {
+      const row = document.createElement("div");
+      row.className = "user-list-row";
+      const meta = [c.managerName, c.address, c.phone].filter(Boolean).join(" / ");
+      row.innerHTML = `
+        <div>
+          <div class="user-list-row-name">${c.name}</div>
+          ${meta ? `<div class="user-list-row-meta">${meta}</div>` : ""}
+        </div>
+      `;
+      clinicList.appendChild(row);
+    });
+  }
+
+  function goBack() {
+    if (history.length > 1) {
+      history.back();
+    } else {
+      window.close();
+      setTimeout(() => { location.href = "index.html"; }, 300);
+    }
+  }
+
+  backButton.addEventListener("click", goBack);
+  headerBackButton.addEventListener("click", goBack);
+
+  saveClinicButton.addEventListener("click", async () => {
+    const name = clinicName.value.trim();
+    if (!name) {
+      showToast("治療院名を入力してください");
+      clinicName.focus();
+      return;
+    }
+    saveClinicButton.disabled = true;
+    try {
+      await apiPost("/api/clinics", {
+        name,
+        managerName: managerName.value.trim(),
+        address: address.value.trim(),
+        phone: phone.value.trim(),
+      });
+      showToast("登録しました");
+      clinicName.value = "";
+      managerName.value = "";
+      address.value = "";
+      phone.value = "";
+      renderClinicList();
+    } catch (err) {
+      showToast(err.message);
+    } finally {
+      saveClinicButton.disabled = false;
+    }
+  });
+
+  renderClinicList();
+</script>
+</body>
+</html>

@@ -1,0 +1,369 @@
+﻿UsedRange rows=276 cols=155
+DB1	 VAL=別添１（様式第５号の２）	 FORMULA=別添１（様式第５号の２）
+E5	 VAL=療 養 費 支 給 申 請 書（令和８年７月分）（あんま・マッサージ用）	 FORMULA=療 養 費 支 給 申 請 書（令和８年７月分）（あんま・マッサージ用）
+CC9	 VAL=機関コード　　　　　　　　　　　　　　　　　	 FORMULA=機関コード　　　　　　　　　　　　　　　　　
+E13	 VAL=公費負担者番号	 FORMULA=公費負担者番号
+CC13	 VAL=特記事項	 FORMULA=特記事項
+DM13	 VAL=2 本外	 FORMULA=2 本外
+EG13	 VAL=給付割合	 FORMULA=給付割合
+CU15	 VAL=1 社国	 FORMULA=1 社国
+DD15	 VAL=③ 後高	 FORMULA=③ 後高
+DU15	 VAL=⑧ 高外一	 FORMULA=⑧ 高外一
+DM16	 VAL=4 六外	 FORMULA=4 六外
+E18	 VAL=公費受給者番号	 FORMULA=公費受給者番号
+EG18	 VAL=8	 FORMULA=8
+EM18	 VAL=⑨	 FORMULA=⑨
+ES18	 VAL=10	 FORMULA=10
+CU19	 VAL=2 公費	 FORMULA=2 公費
+DD19	 VAL=4 退職	 FORMULA=4 退職
+DM19	 VAL=6 家外	 FORMULA=6 家外
+E23	 VAL=区市町村番号	 FORMULA=区市町村番号
+CO24	 VAL=種類	 FORMULA=種類
+CY24	 VAL=04 マ	 FORMULA=04 マ
+E28	 VAL=受給者番号	 FORMULA=受給者番号
+CB28	 VAL=保 険 者 番 号	 FORMULA=保 険 者 番 号
+DC28	 VAL=3	 FORMULA=3
+DI28	 VAL=9	 FORMULA=9
+DO28	 VAL=3	 FORMULA=3
+DU28	 VAL=5	 FORMULA=5
+EA28	 VAL=2	 FORMULA=2
+EG28	 VAL=0	 FORMULA=0
+EM28	 VAL=1	 FORMULA=1
+ES28	 VAL=8	 FORMULA=8
+E34	 VAL=被保険者欄	 FORMULA=被保険者欄
+J34	 VAL=○被保険者資格の記号番号	 FORMULA=○被保険者資格の記号番号
+AU34	 VAL=○発病又は負傷年月日	 FORMULA=○発病又は負傷年月日
+BX34	 VAL=〇傷病名、発病又は負傷の原因及びその経過	 FORMULA=〇傷病名、発病又は負傷の原因及びその経過
+EM34	 VAL=発病：不詳	 FORMULA=発病：不詳
+J38	 VAL=０４５６９０５９	 FORMULA=０４５６９０５９
+AU38	 VAL=不詳	 FORMULA=不詳
+BX38	 VAL=変形性腰椎症、下肢拘縮	 FORMULA=変形性腰椎症、下肢拘縮
+EM38	 VAL=経過：観察中	 FORMULA=経過：観察中
+J43	 VAL=療 養 を
+受けた者
+の 氏 名	 FORMULA=療 養 を
+受けた者
+の 氏 名
+AC43	 VAL=(ﾌﾘｶﾞﾅ)　ヤマガタ　ヒロシ	 FORMULA=(ﾌﾘｶﾞﾅ)　ヤマガタ　ヒロシ
+BW43	 VAL=続　柄	 FORMULA=続　柄
+CJ43	 VAL=○業務上・外、第三者行為の有無	 FORMULA=○業務上・外、第三者行為の有無
+AC47	 VAL=山縣　博	 FORMULA=山縣　博
+BQ47	 VAL=㊚・女	 FORMULA=㊚・女
+BW47	 VAL=本人	 FORMULA=本人
+CJ47	 VAL=（　１．業務上　２．第三者行為　③．その他（　　不詳　　　　　　　　））	 FORMULA=（　１．業務上　２．第三者行為　③．その他（　　不詳　　　　　　　　））
+CJ52	 VAL=○施術した場所（施設等に入居している場合及び被保険者の住所と異なる場合に記載）	 FORMULA=○施術した場所（施設等に入居している場合及び被保険者の住所と異なる場合に記載）
+AC57	 VAL=明・大・昭・平・令　　２１年　　１１月　１３日生	 FORMULA=明・大・昭・平・令　　２１年　　１１月　１３日生
+E62	 VAL=施 　術 　内　 容　 欄	 FORMULA=施 　術 　内　 容　 欄
+J62	 VAL=初 療 年 月 日	 FORMULA=初 療 年 月 日
+AQ62	 VAL=施　術　期　間	 FORMULA=施　術　期　間
+DE62	 VAL=実日数	 FORMULA=実日数
+DO62	 VAL=請 　求 　区 　分	 FORMULA=請 　求 　区 　分
+J67	 VAL=（令和）　３年　　３月　５日	 FORMULA=（令和）　３年　　３月　５日
+AQ67	 VAL=自・令和	 FORMULA=自・令和
+AZ67	 VAL=8	 FORMULA=8
+BE67	 VAL=年	 FORMULA=年
+BH67	 VAL=7	 FORMULA=7
+BM67	 VAL=月	 FORMULA=月
+BP67	 VAL=10	 FORMULA=10
+BT67	 VAL=日	 FORMULA=日
+BW67	 VAL=～	 FORMULA=～
+BY67	 VAL=至・令和	 FORMULA=至・令和
+CH67	 VAL=8	 FORMULA=8
+CM67	 VAL=年	 FORMULA=年
+CP67	 VAL=7	 FORMULA=7
+CU67	 VAL=月	 FORMULA=月
+CX67	 VAL=31	 FORMULA=31
+DB67	 VAL=日	 FORMULA=日
+DE67	 VAL=8	 FORMULA==COUNTA(AD172:EW176)
+DL67	 VAL=日	 FORMULA=日
+DO67	 VAL=新　規　・　継　続	 FORMULA=新　規　・　継　続
+J72	 VAL=傷病名及び症状	 FORMULA=傷病名及び症状
+AQ72	 VAL=変形性腰椎症、下肢拘縮、関節拘縮(左膝)、痛み、筋萎縮（躯幹、右下肢）	 FORMULA=変形性腰椎症、下肢拘縮、関節拘縮(左膝)、痛み、筋萎縮（躯幹、右下肢）
+DO72	 VAL=転　　　　　帰	 FORMULA=転　　　　　帰
+DO76	 VAL=継続・治癒・中止・転医	 FORMULA=継続・治癒・中止・転医
+J80	 VAL=施　術　料	 FORMULA=施　術　料
+O80	 VAL=マッサージ（施術料）	 FORMULA=マッサージ（施術料）
+BF80	 VAL=同意部位	 FORMULA=同意部位
+BQ80	 VAL=（躯幹）	 FORMULA=（躯幹）
+CA80	 VAL=（右上肢）	 FORMULA=（右上肢）
+CK80	 VAL=（左上肢）	 FORMULA=（左上肢）
+CU80	 VAL=（右下肢）	 FORMULA=（右下肢）
+DE80	 VAL=（左下肢）	 FORMULA=（左下肢）
+DO80	 VAL=摘　　　要	 FORMULA=摘　　　要
+BF84	 VAL=施術回数	 FORMULA=施術回数
+BQ84	 VAL=8	 FORMULA==DE67
+BW84	 VAL=回	 FORMULA=回
+CA84	 VAL=8	 FORMULA==DE67
+CG84	 VAL=回	 FORMULA=回
+CK84	 VAL=8	 FORMULA==DE67
+CQ84	 VAL=回	 FORMULA=回
+CU84	 VAL=8	 FORMULA==DE67
+DA84	 VAL=回	 FORMULA=回
+DE84	 VAL=8	 FORMULA==DE67
+DK84	 VAL=回	 FORMULA=回
+W88	 VAL=　通所	 FORMULA=　通所
+BW88	 VAL=円×	 FORMULA=円×
+CQ88	 VAL=回＝	 FORMULA=回＝
+CX88	 VAL=0	 FORMULA==BF88*CD88
+DK88	 VAL=円	 FORMULA=円
+W96	 VAL=　訪問施術料　１	 FORMULA=　訪問施術料　１
+BF96	 VAL=4650	 FORMULA=4650
+BW96	 VAL=円×	 FORMULA=円×
+CD96	 VAL=8	 FORMULA==DE67
+CQ96	 VAL=回＝	 FORMULA=回＝
+CX96	 VAL=37200	 FORMULA==BF96*CD96
+DK96	 VAL=円	 FORMULA=円
+W104	 VAL=　訪問施術料　２	 FORMULA=　訪問施術料　２
+BW104	 VAL=円×	 FORMULA=円×
+CQ104	 VAL=回＝	 FORMULA=回＝
+CX104	 VAL=0	 FORMULA==BF104*CD104
+DK104	 VAL=円	 FORMULA=円
+W112	 VAL=　訪問施術料　３（３人～９人）	 FORMULA=　訪問施術料　３（３人～９人）
+BW112	 VAL=円×	 FORMULA=円×
+CQ112	 VAL=回＝	 FORMULA=回＝
+CX112	 VAL=0	 FORMULA==BF112*CD112
+DK112	 VAL=円	 FORMULA=円
+O120	 VAL=温　罨　法（加 算）	 FORMULA=温　罨　法（加 算）
+BF120	 VAL=180	 FORMULA=180
+BX120	 VAL=円	 FORMULA=円
+BZ120	 VAL=×	 FORMULA=×
+CR120	 VAL=回	 FORMULA=回
+CT120	 VAL=＝	 FORMULA=＝
+DK120	 VAL=円	 FORMULA=円
+O124	 VAL=温罨法・電機光線器具（加 算）	 FORMULA=温罨法・電機光線器具（加 算）
+BF124	 VAL=300	 FORMULA=300
+BX124	 VAL=円	 FORMULA=円
+BZ124	 VAL=×	 FORMULA=×
+CR124	 VAL=回	 FORMULA=回
+CT124	 VAL=＝	 FORMULA=＝
+CV124	 VAL=0	 FORMULA==BF124*CB124
+DK124	 VAL=円	 FORMULA=円
+O128	 VAL=変形徒手矯正術（加算）
+※温罨法との併施は不可	 FORMULA=変形徒手矯正術（加算）
+※温罨法との併施は不可
+BF128	 VAL=同意部位	 FORMULA=同意部位
+BS128	 VAL=（右上肢）	 FORMULA=（右上肢）
+CE128	 VAL=（左上肢）	 FORMULA=（左上肢）
+CQ128	 VAL=（右下肢）	 FORMULA=（右下肢）
+DC128	 VAL=（左下肢）	 FORMULA=（左下肢）
+BF132	 VAL=施術回数	 FORMULA=施術回数
+CA132	 VAL=回	 FORMULA=回
+CM132	 VAL=回	 FORMULA=回
+CY132	 VAL=回	 FORMULA=回
+DK132	 VAL=回	 FORMULA=回
+BF136	 VAL=470	 FORMULA=470
+BX136	 VAL=円	 FORMULA=円
+BZ136	 VAL=×	 FORMULA=×
+CR136	 VAL=回	 FORMULA=回
+CT136	 VAL=＝	 FORMULA=＝
+CV136	 VAL=0	 FORMULA==BF136*CB136
+DK136	 VAL=円	 FORMULA=円
+O140	 VAL=特 別 地 域（加 算）	 FORMULA=特 別 地 域（加 算）
+BF140	 VAL=250	 FORMULA=250
+BX140	 VAL=円	 FORMULA=円
+BZ140	 VAL=×	 FORMULA=×
+CR140	 VAL=回	 FORMULA=回
+CT140	 VAL=＝	 FORMULA=＝
+CV140	 VAL=0	 FORMULA==BF140*CB140
+DK140	 VAL=円	 FORMULA=円
+J144	 VAL=　往　療　料	 FORMULA=　往　療　料
+BF144	 VAL=2300	 FORMULA=2300
+BX144	 VAL=円	 FORMULA=円
+BZ144	 VAL=×	 FORMULA=×
+CB144	 VAL=0	 FORMULA=0
+CR144	 VAL=回	 FORMULA=回
+CT144	 VAL=＝	 FORMULA=＝
+CV144	 VAL=0	 FORMULA==BF144*CB144
+DK144	 VAL=円	 FORMULA=円
+J148	 VAL=施術報告書交付料　（前回支給：　　年　　月分）	 FORMULA=施術報告書交付料　（前回支給：　　年　　月分）
+BF148	 VAL=480	 FORMULA=480
+BX148	 VAL=円	 FORMULA=円
+BZ148	 VAL=×	 FORMULA=×
+CR148	 VAL=回	 FORMULA=回
+CT148	 VAL=＝	 FORMULA=＝
+CV148	 VAL=0	 FORMULA==BF148*CB148
+DK148	 VAL=円	 FORMULA=円
+J152	 VAL=　明　細　書　発　行　加　算	 FORMULA=　明　細　書　発　行　加　算
+BF152	 VAL=10	 FORMULA=10
+BX152	 VAL=円	 FORMULA=円
+BZ152	 VAL=×	 FORMULA=×
+CB152	 VAL=1	 FORMULA=1
+CR152	 VAL=回	 FORMULA=回
+CT152	 VAL=＝	 FORMULA=＝
+CV152	 VAL=10	 FORMULA==BF152*CB152
+DK152	 VAL=円	 FORMULA=円
+J156	 VAL=合　　　　　　　　計	 FORMULA=合　　　　　　　　計
+BF156	 VAL=37210	 FORMULA==SUM(CX88:DJ119,CV120,CV124,CV136,CV140,CV144,CV148,CV152)
+DK156	 VAL=円	 FORMULA=円
+J160	 VAL=一部負担金（１ 割 ・ ２ 割 ・ ３ 割）	 FORMULA=一部負担金（１ 割 ・ ２ 割 ・ ３ 割）
+BF160	 VAL=3721	 FORMULA==BF156*0.1
+DK160	 VAL=円	 FORMULA=円
+J164	 VAL=請　　　 求 　　　額	 FORMULA=請　　　 求 　　　額
+BF164	 VAL=33489	 FORMULA==BF156-BF160
+DK164	 VAL=円	 FORMULA=円
+J168	 VAL=施術日	 FORMULA=施術日
+Q168	 VAL=訪問１①	 FORMULA=訪問１①
+X168	 VAL=7	 FORMULA==BH67
+AD168	 VAL=1	 FORMULA=1
+AH168	 VAL=2	 FORMULA=2
+AL168	 VAL=3	 FORMULA=3
+AP168	 VAL=4	 FORMULA=4
+AT168	 VAL=5	 FORMULA=5
+AX168	 VAL=6	 FORMULA=6
+BB168	 VAL=7	 FORMULA=7
+BF168	 VAL=8	 FORMULA=8
+BJ168	 VAL=9	 FORMULA=9
+BN168	 VAL=10	 FORMULA=10
+BR168	 VAL=11	 FORMULA=11
+BV168	 VAL=12	 FORMULA=12
+BZ168	 VAL=13	 FORMULA=13
+CD168	 VAL=14	 FORMULA=14
+CH168	 VAL=15	 FORMULA=15
+CL168	 VAL=16	 FORMULA=16
+CP168	 VAL=17	 FORMULA=17
+CT168	 VAL=18	 FORMULA=18
+CX168	 VAL=19	 FORMULA=19
+DB168	 VAL=20	 FORMULA=20
+DF168	 VAL=21	 FORMULA=21
+DJ168	 VAL=22	 FORMULA=22
+DN168	 VAL=23	 FORMULA=23
+DR168	 VAL=24	 FORMULA=24
+DV168	 VAL=25	 FORMULA=25
+DZ168	 VAL=26	 FORMULA=26
+ED168	 VAL=27	 FORMULA=27
+EH168	 VAL=28	 FORMULA=28
+EL168	 VAL=29	 FORMULA=29
+EP168	 VAL=30	 FORMULA=30
+ET168	 VAL=31	 FORMULA=31
+J171	 VAL=通所○	 FORMULA=通所○
+Q171	 VAL=訪問２②	 FORMULA=訪問２②
+BN172	 VAL=①	 FORMULA=①
+BZ172	 VAL=①	 FORMULA=①
+CH172	 VAL=①	 FORMULA=①
+CP172	 VAL=①	 FORMULA=①
+DJ172	 VAL=①	 FORMULA=①
+DR172	 VAL=①	 FORMULA=①
+EH172	 VAL=①	 FORMULA=①
+ET172	 VAL=①	 FORMULA=①
+X173	 VAL=月	 FORMULA=月
+J174	 VAL=往療◎	 FORMULA=往療◎
+Q174	 VAL=訪問３③	 FORMULA=訪問３③
+J177	 VAL=○往療又は訪問の理由（　①．独歩による公共交通機関を使っての外出困難　２．認知症や視覚、内部、精神障害などにより独歩による外出困難　３．その他（　　　　      　　　　　     　　　　　　　      　　　　　　　　　）　）	 FORMULA=○往療又は訪問の理由（　①．独歩による公共交通機関を使っての外出困難　２．認知症や視覚、内部、精神障害などにより独歩による外出困難　３．その他（　　　　      　　　　　     　　　　　　　      　　　　　　　　　）　）
+E181	 VAL=施術証明欄	 FORMULA=施術証明欄
+M181	 VAL=上記のとおり施術を行い、その費用を領収しました。	 FORMULA=上記のとおり施術を行い、その費用を領収しました。
+CG181	 VAL=保健所登録区分	 FORMULA=保健所登録区分
+DC181	 VAL=①.施術所所在地　2.出張専門施術者住所地	 FORMULA=①.施術所所在地　2.出張専門施術者住所地
+M185	 VAL=療養費の受領を下記の代理人に委任します。	 FORMULA=療養費の受領を下記の代理人に委任します。
+BP185	 VAL=施術所	 FORMULA=施術所
+CR185	 VAL=〒751－0805	 FORMULA=〒751－0805
+M188	 VAL=令和	 FORMULA=令和
+R188	 VAL=8	 FORMULA==CH67
+X188	 VAL=年	 FORMULA=年
+AA188	 VAL=7	 FORMULA==CP67
+AG188	 VAL=月	 FORMULA=月
+AI188	 VAL=31	 FORMULA==CX67
+AP188	 VAL=日	 FORMULA=日
+CG188	 VAL=所在地	 FORMULA=所在地
+CR188	 VAL=下関市一の宮住吉3丁目1－9－401号	 FORMULA=下関市一の宮住吉3丁目1－9－401号
+M192	 VAL=登録記号番号	 FORMULA=登録記号番号
+CG192	 VAL=名　称	 FORMULA=名　称
+CR192	 VAL=いきいき治療院下関	 FORMULA=いきいき治療院下関
+M195	 VAL=35000128－1－0	 FORMULA=35000128－1－0
+BP196	 VAL=施術管理者	 FORMULA=施術管理者
+CG196	 VAL=氏　名	 FORMULA=氏　名
+CR196	 VAL=吉田　敬一	 FORMULA=吉田　敬一
+EA196	 VAL=電話	 FORMULA=電話
+EG196	 VAL=083-237-9115	 FORMULA=083-237-9115
+E200	 VAL=申請欄	 FORMULA=申請欄
+M200	 VAL=上記の療養に要した費用に関して、療養費の支給を申請します。	 FORMULA=上記の療養に要した費用に関して、療養費の支給を申請します。
+CR200	 VAL=〒751－0853	 FORMULA=〒751－0853
+M204	 VAL=令和	 FORMULA=令和
+R204	 VAL=8	 FORMULA==CH67
+X204	 VAL=年	 FORMULA=年
+AA204	 VAL=7	 FORMULA==CP67
+AG204	 VAL=月	 FORMULA=月
+AI204	 VAL=31	 FORMULA==CX67
+AP204	 VAL=日	 FORMULA=日
+BP204	 VAL=    申請者 
+    （被保険者）	 FORMULA=    申請者 
+    （被保険者）
+CG204	 VAL=住所	 FORMULA=住所
+CR204	 VAL=下関市川中豊町6丁目5番1号	 FORMULA=下関市川中豊町6丁目5番1号
+M208	 VAL=山口県後期高齢者医療広域連合会長　　殿	 FORMULA=山口県後期高齢者医療広域連合会長　　殿
+CG211	 VAL=氏名	 FORMULA=氏名
+CR211	 VAL=山縣　博	 FORMULA==AC47
+EA211	 VAL=電話	 FORMULA=電話
+E215	 VAL=支払機関欄	 FORMULA=支払機関欄
+K215	 VAL=支払区分	 FORMULA=支払区分
+BC215	 VAL=預金の種類	 FORMULA=預金の種類
+CH215	 VAL=金融機関名	 FORMULA=金融機関名
+CW215	 VAL=西京	 FORMULA=西京
+DR215	 VAL=銀行	 FORMULA=銀行
+DY215	 VAL=新下関	 FORMULA=新下関
+EO215	 VAL=本店	 FORMULA=本店
+L218	 VAL=①．	 FORMULA=①．
+P218	 VAL=振込	 FORMULA=振込
+AH218	 VAL=2．	 FORMULA=2．
+AL218	 VAL=銀行送金	 FORMULA=銀行送金
+BD218	 VAL=①.　普通	 FORMULA=①.　普通
+BS218	 VAL=2.　当座	 FORMULA=2.　当座
+DR218	 VAL=金庫	 FORMULA=金庫
+EO218	 VAL=支店	 FORMULA=支店
+L221	 VAL=3．	 FORMULA=3．
+P221	 VAL=郵便局送金	 FORMULA=郵便局送金
+AH221	 VAL=4．	 FORMULA=4．
+AL221	 VAL=当地払	 FORMULA=当地払
+BD221	 VAL=3.　通知	 FORMULA=3.　通知
+BS221	 VAL=4.　別段	 FORMULA=4.　別段
+DR221	 VAL=農協	 FORMULA=農協
+EO221	 VAL=出張所	 FORMULA=出張所
+J224	 VAL=口　座　名　義
+カタカナで記入	 FORMULA=口　座　名　義
+カタカナで記入
+AD224	 VAL=カブシキカイシャフロントラインネクストダイヒョウトリシマリヤクアベヒロユキ	 FORMULA=カブシキカイシャフロントラインネクストダイヒョウトリシマリヤクアベヒロユキ
+BV224	 VAL=口座番号	 FORMULA=口座番号
+CL224	 VAL=2	 FORMULA=2
+CQ224	 VAL=1	 FORMULA=1
+CV224	 VAL=7	 FORMULA=7
+DA224	 VAL=8	 FORMULA=8
+DF224	 VAL=0	 FORMULA=0
+DK224	 VAL=5	 FORMULA=5
+DP224	 VAL=1	 FORMULA=1
+DU224	 VAL=郵便局	 FORMULA=郵便局
+E229	 VAL=同意記録	 FORMULA=同意記録
+J229	 VAL=同意医師の氏名	 FORMULA=同意医師の氏名
+AJ229	 VAL=住　　　　　所	 FORMULA=住　　　　　所
+CA229	 VAL=同 意 年 月 日	 FORMULA=同 意 年 月 日
+DE229	 VAL=傷　　病　　名	 FORMULA=傷　　病　　名
+EF229	 VAL=要加療期間	 FORMULA=要加療期間
+J233	 VAL=劉　震永	 FORMULA=劉　震永
+AJ233	 VAL=下関市安岡本町2丁目1－22
+りゅう呼吸器科内科	 FORMULA=下関市安岡本町2丁目1－22
+りゅう呼吸器科内科
+CA233	 VAL=令和 ８年　７月　１０日	 FORMULA=令和 ８年　７月　１０日
+DE233	 VAL=変形性腰椎症、下肢拘縮	 FORMULA==BX38
+EF233	 VAL=自・令和8年7月10日	 FORMULA=自・令和8年7月10日
+EF237	 VAL=至・令和8年12月31日	 FORMULA=至・令和8年12月31日
+J243	 VAL=本申請書に基づく給付金に関する受領を代理人に委任します。	 FORMULA=本申請書に基づく給付金に関する受領を代理人に委任します。
+CP243	 VAL=令和	 FORMULA=令和
+CV243	 VAL=8	 FORMULA==CH67
+DA243	 VAL=年	 FORMULA=年
+DD243	 VAL=7	 FORMULA==CP67
+DJ243	 VAL=月	 FORMULA=月
+DL243	 VAL=31	 FORMULA==CX67
+DR243	 VAL=日	 FORMULA=日
+J247	 VAL=申請者	 FORMULA=申請者
+AA247	 VAL=住所	 FORMULA=住所
+AG247	 VAL=下関市川中豊町6丁目5番1号	 FORMULA==CR204
+CO247	 VAL=代理人	 FORMULA=代理人
+CU247	 VAL=住所　山口県長門市東深川1907番地9	 FORMULA=住所　山口県長門市東深川1907番地9
+J255	 VAL=（被保険者）	 FORMULA=（被保険者）
+AA255	 VAL=氏名	 FORMULA=氏名
+CU255	 VAL=氏名	 FORMULA=氏名
+CZ255	 VAL=株）フロントラインネクスト代表取締役　阿部　弘行	 FORMULA=株）フロントラインネクスト代表取締役　阿部　弘行
+EF255	 VAL=電話	 FORMULA=電話
+EJ257	 VAL=083-237-9115	 FORMULA==EG196
+E265	 VAL=※　この給付金の受領の代理人への委任は、受領委任の取扱規程（平成30年6月12日保発0612第2号通知）に従い行われるものです。	 FORMULA=※　この給付金の受領の代理人への委任は、受領委任の取扱規程（平成30年6月12日保発0612第2号通知）に従い行われるものです。
+E268	 VAL=※　給付金に関する受領を代理人に委任する（申請者名義以外の口座に振込を希望される）場合に署名してください。	 FORMULA=※　給付金に関する受領を代理人に委任する（申請者名義以外の口座に振込を希望される）場合に署名してください。
+E271	 VAL=※　ただし、当該患者より依頼を受けた場合や当該患者が記入することができないやむを得ない理由がある場合には、施術管理	 FORMULA=※　ただし、当該患者より依頼を受けた場合や当該患者が記入することができないやむを得ない理由がある場合には、施術管理
+E274	 VAL=　者等が代理記入をし当該患者から押印を受けてください。	 FORMULA=　者等が代理記入をし当該患者から押印を受けてください。

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>いきいき治療院 記録入力</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="page">
+
+  <div class="topbar">
+    <div class="app-title"><span class="app-title-main">🌿 いきいき治療院</span><span class="app-title-sub">日々の打ち込み</span></div>
+    <div class="topbar-buttons">
+      <div class="menu-dropdown">
+        <button class="menu-button menu-trigger" type="button" id="menuTriggerButton" aria-haspopup="true" aria-expanded="false">☰ メニュー</button>
+        <div class="menu-panel" id="menuPanel" hidden>
+          <a class="menu-item" href="consent.html" target="_blank" rel="noopener" id="consentMenuLink">📝 同意書登録</a>
+          <button class="menu-item" type="button" id="recordListButton">🗂 記録一覧</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wizard-grid">
+
+    <div class="card">
+      <p class="card-heading"><span class="badge">1</span>担当をえらぶ</p>
+      <div class="field">
+        <label class="field-label" for="recordDate">📅 日付</label>
+        <input class="date-input" type="date" id="recordDate" name="recordDate" />
+      </div>
+      <div class="field">
+        <label class="field-label" for="clinicSelect">🏥 担当治療院</label>
+        <div class="facility-select-row">
+          <select class="select-input" id="clinicSelect"></select>
+          <a class="facility-add-button" href="clinic-new.html" target="_blank" rel="noopener">＋ 新規登録</a>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field-label" for="staffSelect">👤 担当施術師</label>
+        <div class="facility-select-row">
+          <select class="select-input" id="staffSelect"></select>
+          <button class="facility-add-button" type="button" id="newStaffButton">＋ 新規登録</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="card-heading"><span class="badge">2</span>利用者をえらぶ</p>
+
+      <div class="field">
+        <label class="field-label">📅 先週の利用者（曜日でえらぶ）</label>
+        <div class="pill-group" id="dayPillGroup"></div>
+      </div>
+
+      <div class="field">
+        <div id="lastWeekList" class="user-list"></div>
+        <p class="field-hint" id="lastWeekEmptyHint" hidden>この曜日の利用者はいません。</p>
+      </div>
+
+      <p class="section-divider">見つからない場合は名前で検索</p>
+
+      <div class="field">
+        <label class="field-label" for="nameSearch">🔍 名前検索（あいまい検索でOK）</label>
+        <input class="text-input" type="text" id="nameSearch" placeholder="例：やまだ" autocomplete="off" />
+      </div>
+
+      <div class="field">
+        <div id="searchResultList" class="user-list"></div>
+        <p class="field-hint" id="searchEmptyHint" hidden>該当する利用者が見つかりません。下から新規登録できます。</p>
+      </div>
+
+      <a class="add-event-button" href="user-new.html" target="_blank" rel="noopener" id="newUserLink">＋ 新規登録（見つからない場合）</a>
+    </div>
+
+    <div class="card" id="selectedUserCard">
+      <p class="card-heading"><span class="badge">3</span>記録を入力する</p>
+
+      <div class="field">
+        <label class="field-label">👤 名前</label>
+        <div class="selected-name-display" id="selectedNameDisplay">未選択</div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">🚗 通院・訪問の区分</label>
+        <div class="pill-group" id="visitTypePillGroup"></div>
+      </div>
+
+      <div class="field" id="facilitySection" hidden>
+        <label class="field-label" for="facilitySelect">🏠 訪問先の施設</label>
+        <div class="facility-select-row">
+          <select class="select-input" id="facilitySelect"></select>
+          <button class="facility-add-button" type="button" id="newFacilityButton">＋ 新規登録</button>
+        </div>
+        <div class="area-input-row">
+          <span class="area-input-label">👥 同施設内での施術人数</span>
+          <input class="area-number-input" type="number" inputmode="numeric" min="1" placeholder="1" id="facilityPatientCount" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="treatmentContent">📝 治療内容（訂正できます）</label>
+        <textarea class="textarea-input" id="treatmentContent" placeholder="治療内容を入力・修正してください"></textarea>
+      </div>
+
+      <div class="field">
+        <label class="field-label">💆 施術　部位</label>
+        <div class="area-input-group" id="areaInputGroup">
+          <div class="area-input-row">
+            <span class="area-input-label">あん摩</span>
+            <input class="area-number-input" type="number" inputmode="numeric" min="0" placeholder="0" data-area="あん摩" />
+          </div>
+          <div class="area-input-row">
+            <span class="area-input-label">鍼灸</span>
+            <input class="area-number-input" type="number" inputmode="numeric" min="0" placeholder="0" data-area="鍼灸" />
+          </div>
+          <div class="area-input-row">
+            <span class="area-input-label">変形徒手</span>
+            <input class="area-number-input" type="number" inputmode="numeric" min="0" placeholder="0" data-area="変形徒手" />
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">📷 写真（スマホ内に保存）</label>
+        <div class="photo-row">
+          <div class="photo-slot">
+            <div class="photo-preview" id="backPhotoPreview"><span>後ろ姿</span></div>
+            <input type="file" accept="image/*" capture="environment" id="backPhotoInput" hidden />
+            <button type="button" class="photo-button" id="backPhotoButton">📸 後ろ姿を撮る</button>
+          </div>
+          <div class="photo-slot">
+            <div class="photo-preview" id="kneePhotoPreview"><span>膝の位置</span></div>
+            <input type="file" accept="image/*" capture="environment" id="kneePhotoInput" hidden />
+            <button type="button" class="photo-button" id="kneePhotoButton">📸 膝の位置を撮る</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="impressionNote">💬 所感</label>
+        <textarea class="textarea-input" id="impressionNote" placeholder="気づいたこと・様子など"></textarea>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-card">
+    <button class="send-button" type="button" id="saveButton">✅ この記録を保存する</button>
+  </div>
+
+</div>
+
+<div class="sheet-overlay" id="newFacilityOverlay">
+  <div class="sheet-panel">
+    <div class="sheet-handle"></div>
+    <p class="card-heading">新規施設登録</p>
+    <div class="field">
+      <label class="field-label" for="newFacilityName">施設名<span class="required">必須</span></label>
+      <input class="text-input" type="text" id="newFacilityName" placeholder="例：〇〇デイサービス" />
+    </div>
+    <div class="sheet-actions">
+      <button class="word-button" type="button" id="cancelNewFacilityButton">キャンセル</button>
+      <button class="send-button" type="button" id="saveNewFacilityButton">登録する</button>
+    </div>
+  </div>
+</div>
+
+<div class="sheet-overlay" id="newStaffOverlay">
+  <div class="sheet-panel">
+    <div class="sheet-handle"></div>
+    <p class="card-heading">新規施術師登録</p>
+    <div class="field">
+      <label class="field-label" for="newStaffName">名前<span class="required">必須</span></label>
+      <input class="text-input" type="text" id="newStaffName" placeholder="例：山田 太郎" />
+    </div>
+    <div class="sheet-actions">
+      <button class="word-button" type="button" id="cancelNewStaffButton">キャンセル</button>
+      <button class="send-button" type="button" id="saveNewStaffButton">登録する</button>
+    </div>
+  </div>
+</div>
+
+<div class="sheet-overlay" id="recordListOverlay">
+  <div class="sheet-panel">
+    <div class="sheet-handle"></div>
+    <p class="card-heading">記録一覧</p>
+    <div id="recordListContainer"></div>
+    <div class="sheet-actions">
+      <button class="word-button" type="button" id="closeRecordListButton">閉じる</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
