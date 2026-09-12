@@ -63,12 +63,6 @@ const newFacilityName = document.getElementById("newFacilityName");
 const cancelNewFacilityButton = document.getElementById("cancelNewFacilityButton");
 const saveNewFacilityButton = document.getElementById("saveNewFacilityButton");
 
-const newStaffButton = document.getElementById("newStaffButton");
-const newStaffOverlay = document.getElementById("newStaffOverlay");
-const newStaffName = document.getElementById("newStaffName");
-const cancelNewStaffButton = document.getElementById("cancelNewStaffButton");
-const saveNewStaffButton = document.getElementById("saveNewStaffButton");
-
 const recordListButton = document.getElementById("recordListButton");
 const recordListOverlay = document.getElementById("recordListOverlay");
 const recordListContainer = document.getElementById("recordListContainer");
@@ -133,35 +127,6 @@ document.addEventListener("visibilitychange", () => {
     loadClinics();
     loadStaff();
     loadUsers().then(renderSearchResults);
-  }
-});
-
-newStaffButton.addEventListener("click", () => {
-  newStaffName.value = "";
-  openSheet(newStaffOverlay);
-  newStaffName.focus();
-});
-
-cancelNewStaffButton.addEventListener("click", () => closeSheet(newStaffOverlay));
-
-saveNewStaffButton.addEventListener("click", async () => {
-  const name = newStaffName.value.trim();
-  if (!name) {
-    newStaffName.focus();
-    return;
-  }
-  saveNewStaffButton.disabled = true;
-  try {
-    const staff = await apiPost("/api/staff", { name });
-    staffList.push(staff);
-    fillSelect(staffSelect, staffList.map((s) => s.name));
-    staffSelect.value = staff.name;
-    closeSheet(newStaffOverlay);
-    showToast("施術師を登録しました");
-  } catch (err) {
-    showToast(err.message);
-  } finally {
-    saveNewStaffButton.disabled = false;
   }
 });
 
@@ -552,7 +517,7 @@ menuPanel.querySelectorAll(".menu-item").forEach((item) => {
 
 closeRecordListButton.addEventListener("click", () => closeSheet(recordListOverlay));
 
-[newFacilityOverlay, newStaffOverlay, recordListOverlay].forEach((overlay) => {
+[newFacilityOverlay, recordListOverlay].forEach((overlay) => {
   overlay.addEventListener("click", (e) => {
     if (e.target === overlay) closeSheet(overlay);
   });

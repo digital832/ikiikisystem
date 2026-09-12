@@ -38,6 +38,11 @@ app.post("/api/users", async (req, res) => {
       publicExpenseRecipientNumber: (req.body.publicExpenseRecipientNumber || "").trim(),
       copayRatio: (req.body.copayRatio || "").trim(),
       clinic: (req.body.clinic || "").trim(),
+      practitioner1: (req.body.practitioner1 || "").trim(),
+      practitioner2: (req.body.practitioner2 || "").trim(),
+      day1: (req.body.day1 || "").trim(),
+      day2: (req.body.day2 || "").trim(),
+      day3: (req.body.day3 || "").trim(),
     });
     res.json(user);
   } catch (err) {
@@ -65,6 +70,11 @@ app.put("/api/users/:id", async (req, res) => {
       publicExpenseRecipientNumber: (req.body.publicExpenseRecipientNumber || "").trim(),
       copayRatio: (req.body.copayRatio || "").trim(),
       clinic: (req.body.clinic || "").trim(),
+      practitioner1: (req.body.practitioner1 || "").trim(),
+      practitioner2: (req.body.practitioner2 || "").trim(),
+      day1: (req.body.day1 || "").trim(),
+      day2: (req.body.day2 || "").trim(),
+      day3: (req.body.day3 || "").trim(),
     });
     if (!user) return res.status(404).json({ error: "利用者が見つかりません" });
     res.json(user);

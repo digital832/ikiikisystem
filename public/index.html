@@ -45,7 +45,7 @@
         <label class="field-label" for="staffSelect">👤 担当施術師</label>
         <div class="facility-select-row">
           <select class="select-input" id="staffSelect"></select>
-          <button class="facility-add-button" type="button" id="newStaffButton">＋ 新規登録</button>
+          <a class="facility-add-button" href="practitioner-list.html" target="_blank" rel="noopener">＋ 新規登録</a>
         </div>
       </div>
     </div>
@@ -167,21 +167,6 @@
     <div class="sheet-actions">
       <button class="word-button" type="button" id="cancelNewFacilityButton">キャンセル</button>
       <button class="send-button" type="button" id="saveNewFacilityButton">登録する</button>
-    </div>
-  </div>
-</div>
-
-<div class="sheet-overlay" id="newStaffOverlay">
-  <div class="sheet-panel">
-    <div class="sheet-handle"></div>
-    <p class="card-heading">新規施術師登録</p>
-    <div class="field">
-      <label class="field-label" for="newStaffName">名前<span class="required">必須</span></label>
-      <input class="text-input" type="text" id="newStaffName" placeholder="例：山田 太郎" />
-    </div>
-    <div class="sheet-actions">
-      <button class="word-button" type="button" id="cancelNewStaffButton">キャンセル</button>
-      <button class="send-button" type="button" id="saveNewStaffButton">登録する</button>
     </div>
   </div>
 </div>

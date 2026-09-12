@@ -66,6 +66,41 @@
           <option value="">選択してください</option>
         </select>
       </div>
+
+      <div class="field">
+        <label class="field-label" for="practitioner1">👤 担当施術師１</label>
+        <select class="select-input" id="practitioner1">
+          <option value="">選択してください</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="practitioner2">👤 担当施術師２</label>
+        <select class="select-input" id="practitioner2">
+          <option value="">選択してください</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="day1">📅 曜日１</label>
+        <select class="select-input" id="day1">
+          <option value="">選択してください</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="day2">📅 曜日２</label>
+        <select class="select-input" id="day2">
+          <option value="">選択してください</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="day3">📅 曜日３</label>
+        <select class="select-input" id="day3">
+          <option value="">選択してください</option>
+        </select>
+      </div>
     </div>
 
     <div class="card">
@@ -178,6 +213,11 @@
     phone: document.getElementById("phone"),
     relationship: document.getElementById("relationship"),
     clinic: document.getElementById("clinic"),
+    practitioner1: document.getElementById("practitioner1"),
+    practitioner2: document.getElementById("practitioner2"),
+    day1: document.getElementById("day1"),
+    day2: document.getElementById("day2"),
+    day3: document.getElementById("day3"),
     insurerNumber: document.getElementById("insurerNumber"),
     insuredSymbolNumber: document.getElementById("insuredSymbolNumber"),
     recipientNumber: document.getElementById("recipientNumber"),
@@ -237,6 +277,35 @@
     });
   }
 
+  async function loadPractitioners() {
+    let staff = [];
+    try {
+      staff = await apiGet("/api/staff");
+    } catch (err) {
+      showToast(err.message);
+    }
+    staff.forEach((s) => {
+      [fields.practitioner1, fields.practitioner2].forEach((select) => {
+        const opt = document.createElement("option");
+        opt.value = s.name;
+        opt.textContent = s.name;
+        select.appendChild(opt);
+      });
+    });
+  }
+
+  const DAYS = ["月", "火", "水", "木", "金", "土", "日"];
+  function loadDayOptions() {
+    [fields.day1, fields.day2, fields.day3].forEach((select) => {
+      DAYS.forEach((day) => {
+        const opt = document.createElement("option");
+        opt.value = day;
+        opt.textContent = day + "曜";
+        select.appendChild(opt);
+      });
+    });
+  }
+
   function enterEditMode(user) {
     editingId = user.id;
     fields.name.value = user.name || "";
@@ -247,6 +316,11 @@
     fields.phone.value = user.phone || "";
     fields.relationship.value = user.relationship || "";
     fields.clinic.value = user.clinic || "";
+    fields.practitioner1.value = user.practitioner1 || "";
+    fields.practitioner2.value = user.practitioner2 || "";
+    fields.day1.value = user.day1 || "";
+    fields.day2.value = user.day2 || "";
+    fields.day3.value = user.day3 || "";
     fields.insurerNumber.value = user.insurerNumber || "";
     fields.insuredSymbolNumber.value = user.insuredSymbolNumber || "";
     fields.recipientNumber.value = user.recipientNumber || "";
@@ -345,6 +419,11 @@
       phone: fields.phone.value.trim(),
       relationship: fields.relationship.value,
       clinic: fields.clinic.value,
+      practitioner1: fields.practitioner1.value,
+      practitioner2: fields.practitioner2.value,
+      day1: fields.day1.value,
+      day2: fields.day2.value,
+      day3: fields.day3.value,
       insurerNumber: fields.insurerNumber.value.trim(),
       insuredSymbolNumber: fields.insuredSymbolNumber.value.trim(),
       recipientNumber: fields.recipientNumber.value.trim(),
@@ -436,6 +515,8 @@
   });
 
   loadClinics();
+  loadPractitioners();
+  loadDayOptions();
   if (sessionStorage.getItem(UNLOCK_KEY) === "1") {
     unlockUserList();
   }
