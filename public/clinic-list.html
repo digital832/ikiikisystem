@@ -3,22 +3,22 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>治療院の新規登録</title>
+<title>施術所一覧</title>
 <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 <div class="page">
 
   <div class="topbar">
-    <a href="index.html" class="app-title">🌿 いきいき治療院<span class="app-title-sub">治療院の新規登録</span></a>
+    <a href="index.html" class="app-title">🌿 いきいき治療院<span class="app-title-sub">施術所一覧</span></a>
   </div>
 
   <div class="wizard-grid">
     <div class="card">
-      <p class="card-heading"><span class="badge" id="formBadge">🏥</span><span id="formHeading">治療院を登録する</span></p>
+      <p class="card-heading"><span class="badge" id="formBadge">🏥</span><span id="formHeading">施術所を登録する</span></p>
 
       <div class="field">
-        <label class="field-label" for="clinicName">治療院名<span class="required">必須</span></label>
+        <label class="field-label" for="clinicName">施術所名<span class="required">必須</span></label>
         <input class="text-input" type="text" id="clinicName" placeholder="例：いきいき治療院 下関" />
       </div>
 
@@ -38,17 +38,17 @@
       </div>
     </div>
 
-    <div class="card" id="clinicListCard">
-      <p class="card-heading"><span class="badge">📋</span>登録済みの治療院</p>
-      <div id="clinicList" class="user-list"></div>
-      <p class="field-hint" id="clinicListEmptyHint" hidden>まだ登録されている治療院はありません。</p>
+    <div class="card" id="listCard">
+      <p class="card-heading"><span class="badge">📋</span>登録済みの施術所</p>
+      <div id="itemList" class="user-list"></div>
+      <p class="field-hint" id="listEmptyHint" hidden>まだ登録されている施術所はありません。</p>
     </div>
   </div>
 
   <div class="footer-card">
     <button class="word-button" type="button" id="cancelEditButton" hidden>編集をキャンセル</button>
     <button class="word-button" type="button" id="backButton">← 戻る</button>
-    <button class="send-button" type="button" id="saveClinicButton">✅ この治療院を登録する</button>
+    <button class="send-button" type="button" id="saveButton">✅ この施術所を登録する</button>
   </div>
 
 </div>
@@ -77,11 +77,11 @@
   const address = document.getElementById("address");
   const phone = document.getElementById("phone");
   const backButton = document.getElementById("backButton");
-  const saveClinicButton = document.getElementById("saveClinicButton");
+  const saveButton = document.getElementById("saveButton");
   const cancelEditButton = document.getElementById("cancelEditButton");
   const formHeading = document.getElementById("formHeading");
-  const clinicList = document.getElementById("clinicList");
-  const clinicListEmptyHint = document.getElementById("clinicListEmptyHint");
+  const itemList = document.getElementById("itemList");
+  const listEmptyHint = document.getElementById("listEmptyHint");
   const toast = document.getElementById("toast");
 
   let editingId = null;
@@ -107,8 +107,8 @@
     managerName.value = item.managerName || "";
     address.value = item.address || "";
     phone.value = item.phone || "";
-    formHeading.textContent = "治療院を編集する";
-    saveClinicButton.textContent = "✅ この内容で更新する";
+    formHeading.textContent = "施術所を編集する";
+    saveButton.textContent = "✅ この内容で更新する";
     cancelEditButton.hidden = false;
     clinicName.focus();
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -117,35 +117,35 @@
   function exitEditMode() {
     editingId = null;
     clearForm();
-    formHeading.textContent = "治療院を登録する";
-    saveClinicButton.textContent = "✅ この治療院を登録する";
+    formHeading.textContent = "施術所を登録する";
+    saveButton.textContent = "✅ この施術所を登録する";
     cancelEditButton.hidden = true;
   }
 
   cancelEditButton.addEventListener("click", exitEditMode);
 
-  async function renderClinicList() {
-    clinicList.innerHTML = '<p class="field-hint">読み込み中...</p>';
-    let clinics;
+  async function renderList() {
+    itemList.innerHTML = '<p class="field-hint">読み込み中...</p>';
+    let items;
     try {
-      clinics = await apiGet("/api/clinics");
+      items = await apiGet("/api/clinics");
     } catch (err) {
-      clinicList.innerHTML = "";
+      itemList.innerHTML = "";
       showToast(err.message);
       return;
     }
-    clinicList.innerHTML = "";
-    clinicListEmptyHint.hidden = clinics.length > 0;
-    clinics
+    itemList.innerHTML = "";
+    listEmptyHint.hidden = items.length > 0;
+    items
       .slice()
       .reverse()
-      .forEach((c) => {
+      .forEach((item) => {
         const row = document.createElement("div");
         row.className = "user-list-row static";
-        const meta = [c.managerName, c.address, c.phone].filter(Boolean).join(" / ");
+        const meta = [item.managerName, item.address, item.phone].filter(Boolean).join(" / ");
         row.innerHTML = `
           <div class="user-list-row-info">
-            <div class="user-list-row-name">${c.name}</div>
+            <div class="user-list-row-name">${item.name}</div>
             ${meta ? `<div class="user-list-row-meta">${meta}</div>` : ""}
           </div>
           <div class="user-list-row-actions">
@@ -153,19 +153,19 @@
             <button type="button" class="row-action-button delete">削除</button>
           </div>
         `;
-        row.querySelector(".edit").addEventListener("click", () => enterEditMode(c));
-        row.querySelector(".delete").addEventListener("click", () => deleteClinic(c));
-        clinicList.appendChild(row);
+        row.querySelector(".edit").addEventListener("click", () => enterEditMode(item));
+        row.querySelector(".delete").addEventListener("click", () => deleteItem(item));
+        itemList.appendChild(row);
       });
   }
 
-  async function deleteClinic(item) {
+  async function deleteItem(item) {
     if (!confirm(`「${item.name}」を削除しますか？`)) return;
     try {
       await apiSend(`/api/clinics/${item.id}`, "DELETE");
       showToast("削除しました");
       if (editingId === item.id) exitEditMode();
-      renderClinicList();
+      renderList();
     } catch (err) {
       showToast(err.message);
     }
@@ -182,14 +182,14 @@
 
   backButton.addEventListener("click", goBack);
 
-  saveClinicButton.addEventListener("click", async () => {
+  saveButton.addEventListener("click", async () => {
     const name = clinicName.value.trim();
     if (!name) {
-      showToast("治療院名を入力してください");
+      showToast("施術所名を入力してください");
       clinicName.focus();
       return;
     }
-    saveClinicButton.disabled = true;
+    saveButton.disabled = true;
     const body = {
       name,
       managerName: managerName.value.trim(),
@@ -206,15 +206,15 @@
         showToast("登録しました");
         clearForm();
       }
-      renderClinicList();
+      renderList();
     } catch (err) {
       showToast(err.message);
     } finally {
-      saveClinicButton.disabled = false;
+      saveButton.disabled = false;
     }
   });
 
-  renderClinicList();
+  renderList();
 </script>
 </body>
 </html>

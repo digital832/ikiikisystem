@@ -37,11 +37,82 @@ app.post("/api/users", async (req, res) => {
       publicExpensePayerNumber: (req.body.publicExpensePayerNumber || "").trim(),
       publicExpenseRecipientNumber: (req.body.publicExpenseRecipientNumber || "").trim(),
       copayRatio: (req.body.copayRatio || "").trim(),
+      clinic: (req.body.clinic || "").trim(),
     });
     res.json(user);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "利用者の登録に失敗しました" });
+  }
+});
+
+app.put("/api/users/:id", async (req, res) => {
+  try {
+    const name = (req.body.name || "").trim();
+    if (!name) return res.status(400).json({ error: "名前を入力してください" });
+    const user = await sheetsService.updateUser(req.params.id, {
+      name,
+      kana: (req.body.kana || "").trim(),
+      gender: (req.body.gender || "").trim(),
+      birthDate: (req.body.birthDate || "").trim(),
+      address: (req.body.address || "").trim(),
+      phone: (req.body.phone || "").trim(),
+      relationship: (req.body.relationship || "").trim(),
+      insurerNumber: (req.body.insurerNumber || "").trim(),
+      insuredSymbolNumber: (req.body.insuredSymbolNumber || "").trim(),
+      recipientNumber: (req.body.recipientNumber || "").trim(),
+      publicExpensePayerNumber: (req.body.publicExpensePayerNumber || "").trim(),
+      publicExpenseRecipientNumber: (req.body.publicExpenseRecipientNumber || "").trim(),
+      copayRatio: (req.body.copayRatio || "").trim(),
+      clinic: (req.body.clinic || "").trim(),
+    });
+    if (!user) return res.status(404).json({ error: "利用者が見つかりません" });
+    res.json(user);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "利用者の更新に失敗しました" });
+  }
+});
+
+app.delete("/api/users/:id", async (req, res) => {
+  try {
+    const ok = await sheetsService.deleteUser(req.params.id);
+    if (!ok) return res.status(404).json({ error: "利用者が見つかりません" });
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "利用者の削除に失敗しました" });
+  }
+});
+
+app.post("/api/customer-list-password/verify", async (req, res) => {
+  try {
+    const password = (req.body.password || "").trim();
+    const current = await sheetsService.getCustomerListPassword();
+    if (password !== current) {
+      return res.status(401).json({ error: "パスワードが違います" });
+    }
+    res.json({ ok: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "確認に失敗しました" });
+  }
+});
+
+app.post("/api/customer-list-password/change", async (req, res) => {
+  try {
+    const currentPassword = (req.body.currentPassword || "").trim();
+    const newPassword = (req.body.newPassword || "").trim();
+    if (!newPassword) return res.status(400).json({ error: "新しいパスワードを入力してください" });
+    const current = await sheetsService.getCustomerListPassword();
+    if (currentPassword !== current) {
+      return res.status(401).json({ error: "現在のパスワードが違います" });
+    }
+    await sheetsService.setCustomerListPassword(newPassword);
+    res.json({ ok: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "パスワードの変更に失敗しました" });
   }
 });
 
@@ -64,6 +135,30 @@ app.post("/api/staff", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "施術師の登録に失敗しました" });
+  }
+});
+
+app.put("/api/staff/:id", async (req, res) => {
+  try {
+    const name = (req.body.name || "").trim();
+    if (!name) return res.status(400).json({ error: "施術師名を入力してください" });
+    const staff = await sheetsService.updateStaff(req.params.id, name);
+    if (!staff) return res.status(404).json({ error: "施術師が見つかりません" });
+    res.json(staff);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "施術師の更新に失敗しました" });
+  }
+});
+
+app.delete("/api/staff/:id", async (req, res) => {
+  try {
+    const ok = await sheetsService.deleteStaff(req.params.id);
+    if (!ok) return res.status(404).json({ error: "施術師が見つかりません" });
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "施術師の削除に失敗しました" });
   }
 });
 
@@ -91,6 +186,35 @@ app.post("/api/clinics", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "治療院の登録に失敗しました" });
+  }
+});
+
+app.put("/api/clinics/:id", async (req, res) => {
+  try {
+    const name = (req.body.name || "").trim();
+    if (!name) return res.status(400).json({ error: "治療院名を入力してください" });
+    const clinic = await sheetsService.updateClinic(req.params.id, {
+      name,
+      managerName: (req.body.managerName || "").trim(),
+      address: (req.body.address || "").trim(),
+      phone: (req.body.phone || "").trim(),
+    });
+    if (!clinic) return res.status(404).json({ error: "治療院が見つかりません" });
+    res.json(clinic);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "治療院の更新に失敗しました" });
+  }
+});
+
+app.delete("/api/clinics/:id", async (req, res) => {
+  try {
+    const ok = await sheetsService.deleteClinic(req.params.id);
+    if (!ok) return res.status(404).json({ error: "治療院が見つかりません" });
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "治療院の削除に失敗しました" });
   }
 });
 
@@ -135,6 +259,52 @@ app.post("/api/doctors", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "医師の登録に失敗しました" });
+  }
+});
+
+app.get("/api/employees", async (req, res) => {
+  try {
+    const employees = await sheetsService.getEmployees();
+    res.json(employees);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "スタッフの取得に失敗しました" });
+  }
+});
+
+app.post("/api/employees", async (req, res) => {
+  try {
+    const name = (req.body.name || "").trim();
+    if (!name) return res.status(400).json({ error: "スタッフ名を入力してください" });
+    const employee = await sheetsService.addEmployee(name);
+    res.json(employee);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "スタッフの登録に失敗しました" });
+  }
+});
+
+app.put("/api/employees/:id", async (req, res) => {
+  try {
+    const name = (req.body.name || "").trim();
+    if (!name) return res.status(400).json({ error: "スタッフ名を入力してください" });
+    const employee = await sheetsService.updateEmployee(req.params.id, name);
+    if (!employee) return res.status(404).json({ error: "スタッフが見つかりません" });
+    res.json(employee);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "スタッフの更新に失敗しました" });
+  }
+});
+
+app.delete("/api/employees/:id", async (req, res) => {
+  try {
+    const ok = await sheetsService.deleteEmployee(req.params.id);
+    if (!ok) return res.status(404).json({ error: "スタッフが見つかりません" });
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "スタッフの削除に失敗しました" });
   }
 });
 

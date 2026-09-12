@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>施術師一覧</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="page">
+
+  <div class="topbar">
+    <a href="index.html" class="app-title">🌿 いきいき治療院<span class="app-title-sub">施術師一覧</span></a>
+  </div>
+
+  <div class="wizard-grid">
+    <div class="card">
+      <p class="card-heading"><span class="badge" id="formBadge">💆</span><span id="formHeading">施術師を登録する</span></p>
+
+      <div class="field">
+        <label class="field-label" for="staffName">名前<span class="required">必須</span></label>
+        <input class="text-input" type="text" id="staffName" placeholder="例：山田 太郎" />
+      </div>
+    </div>
+
+    <div class="card" id="listCard">
+      <p class="card-heading"><span class="badge">📋</span>登録済みの施術師</p>
+      <div id="itemList" class="user-list"></div>
+      <p class="field-hint" id="listEmptyHint" hidden>まだ登録されている施術師はいません。</p>
+    </div>
+  </div>
+
+  <div class="footer-card">
+    <button class="word-button" type="button" id="cancelEditButton" hidden>編集をキャンセル</button>
+    <button class="word-button" type="button" id="backButton">← 戻る</button>
+    <button class="send-button" type="button" id="saveButton">✅ この施術師を登録する</button>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  async function apiGet(url) {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || "通信に失敗しました");
+    return res.json();
+  }
+
+  async function apiSend(url, method, body) {
+    const res = await fetch(url, {
+      method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || "通信に失敗しました");
+    return res.json();
+  }
+
+  const staffName = document.getElementById("staffName");
+  const backButton = document.getElementById("backButton");
+  const saveButton = document.getElementById("saveButton");
+  const cancelEditButton = document.getElementById("cancelEditButton");
+  const formHeading = document.getElementById("formHeading");
+  const itemList = document.getElementById("itemList");
+  const listEmptyHint = document.getElementById("listEmptyHint");
+  const toast = document.getElementById("toast");
+
+  let editingId = null;
+
+  let toastTimer = null;
+  function showToast(message) {
+    toast.textContent = message;
+    toast.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove("show"), 2500);
+  }
+
+  function enterEditMode(item) {
+    editingId = item.id;
+    staffName.value = item.name;
+    formHeading.textContent = "施術師を編集する";
+    saveButton.textContent = "✅ この内容で更新する";
+    cancelEditButton.hidden = false;
+    staffName.focus();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function exitEditMode() {
+    editingId = null;
+    staffName.value = "";
+    formHeading.textContent = "施術師を登録する";
+    saveButton.textContent = "✅ この施術師を登録する";
+    cancelEditButton.hidden = true;
+  }
+
+  cancelEditButton.addEventListener("click", exitEditMode);
+
+  async function renderList() {
+    itemList.innerHTML = '<p class="field-hint">読み込み中...</p>';
+    let items;
+    try {
+      items = await apiGet("/api/staff");
+    } catch (err) {
+      itemList.innerHTML = "";
+      showToast(err.message);
+      return;
+    }
+    itemList.innerHTML = "";
+    listEmptyHint.hidden = items.length > 0;
+    items
+      .slice()
+      .reverse()
+      .forEach((item) => {
+        const row = document.createElement("div");
+        row.className = "user-list-row static";
+        row.innerHTML = `
+          <div class="user-list-row-info">
+            <div class="user-list-row-name">${item.name}</div>
+          </div>
+          <div class="user-list-row-actions">
+            <button type="button" class="row-action-button edit">編集</button>
+            <button type="button" class="row-action-button delete">削除</button>
+          </div>
+        `;
+        row.querySelector(".edit").addEventListener("click", () => enterEditMode(item));
+        row.querySelector(".delete").addEventListener("click", () => deleteItem(item));
+        itemList.appendChild(row);
+      });
+  }
+
+  async function deleteItem(item) {
+    if (!confirm(`「${item.name}」を削除しますか？`)) return;
+    try {
+      await apiSend(`/api/staff/${item.id}`, "DELETE");
+      showToast("削除しました");
+      if (editingId === item.id) exitEditMode();
+      renderList();
+    } catch (err) {
+      showToast(err.message);
+    }
+  }
+
+  function goBack() {
+    if (history.length > 1) {
+      history.back();
+    } else {
+      window.close();
+      setTimeout(() => { location.href = "index.html"; }, 300);
+    }
+  }
+
+  backButton.addEventListener("click", goBack);
+
+  saveButton.addEventListener("click", async () => {
+    const name = staffName.value.trim();
+    if (!name) {
+      showToast("名前を入力してください");
+      staffName.focus();
+      return;
+    }
+    saveButton.disabled = true;
+    try {
+      if (editingId) {
+        await apiSend(`/api/staff/${editingId}`, "PUT", { name });
+        showToast("更新しました");
+        exitEditMode();
+      } else {
+        await apiSend("/api/staff", "POST", { name });
+        showToast("登録しました");
+        staffName.value = "";
+      }
+      renderList();
+    } catch (err) {
+      showToast(err.message);
+    } finally {
+      saveButton.disabled = false;
+    }
+  });
+
+  renderList();
+</script>
+</body>
+</html>

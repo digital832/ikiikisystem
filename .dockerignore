@@ -1,0 +1,15 @@
+.git
+.gitignore
+.gcloudignore
+.claude/
+.env
+credentials.json
+node_modules/
+cells_dump.txt
+artifact.html
+*.pdf
+*.xlsx
+*.txt
+その他/
+~$*
+env-vars.yaml

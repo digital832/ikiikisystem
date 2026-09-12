@@ -76,7 +76,6 @@ const closeRecordListButton = document.getElementById("closeRecordListButton");
 
 const menuTriggerButton = document.getElementById("menuTriggerButton");
 const menuPanel = document.getElementById("menuPanel");
-const consentMenuLink = document.getElementById("consentMenuLink");
 
 // ---- 初期化 ----
 
@@ -547,7 +546,9 @@ recordListButton.addEventListener("click", () => {
   openSheet(recordListOverlay);
 });
 
-consentMenuLink.addEventListener("click", () => closeMenuPanel());
+menuPanel.querySelectorAll(".menu-item").forEach((item) => {
+  item.addEventListener("click", () => closeMenuPanel());
+});
 
 closeRecordListButton.addEventListener("click", () => closeSheet(recordListOverlay));
 

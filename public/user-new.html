@@ -10,10 +10,7 @@
 <div class="page">
 
   <div class="topbar">
-    <div class="app-title">🌿 いきいき治療院<span class="app-title-sub">利用者の新規登録</span></div>
-    <div class="topbar-buttons">
-      <button class="topbar-back-button" type="button" id="headerBackButton">← 元のページにもどる</button>
-    </div>
+    <a href="index.html" class="app-title">🌿 いきいき治療院<span class="app-title-sub">利用者の新規登録</span></a>
   </div>
 
   <div class="wizard-grid">
@@ -60,6 +57,13 @@
           <option value="">選択してください</option>
           <option value="本人">本人</option>
           <option value="家族">家族</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="clinic">所属治療院</label>
+        <select class="select-input" id="clinic">
+          <option value="">選択してください</option>
         </select>
       </div>
     </div>
@@ -144,6 +148,7 @@
     address: document.getElementById("address"),
     phone: document.getElementById("phone"),
     relationship: document.getElementById("relationship"),
+    clinic: document.getElementById("clinic"),
     insurerNumber: document.getElementById("insurerNumber"),
     insuredSymbolNumber: document.getElementById("insuredSymbolNumber"),
     recipientNumber: document.getElementById("recipientNumber"),
@@ -152,7 +157,6 @@
     copayRatio: document.getElementById("copayRatio"),
   };
   const backButton = document.getElementById("backButton");
-  const headerBackButton = document.getElementById("headerBackButton");
   const saveUserButton = document.getElementById("saveUserButton");
   const userList = document.getElementById("userList");
   const userListEmptyHint = document.getElementById("userListEmptyHint");
@@ -167,6 +171,21 @@
     toast.classList.add("show");
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => toast.classList.remove("show"), 2500);
+  }
+
+  async function loadClinics() {
+    let clinics = [];
+    try {
+      clinics = await apiGet("/api/clinics");
+    } catch (err) {
+      showToast(err.message);
+    }
+    clinics.forEach((c) => {
+      const opt = document.createElement("option");
+      opt.value = c.name;
+      opt.textContent = c.name;
+      fields.clinic.appendChild(opt);
+    });
   }
 
   async function renderUserList() {
@@ -187,7 +206,7 @@
       .forEach((u) => {
         const row = document.createElement("div");
         row.className = "user-list-row";
-        const meta = [u.kana, u.gender, u.birthDate, u.phone].filter(Boolean).join(" / ");
+        const meta = [u.kana, u.gender, u.birthDate, u.phone, u.clinic].filter(Boolean).join(" / ");
         row.innerHTML = `
           <div>
             <div class="user-list-row-name">${u.name}</div>
@@ -208,7 +227,6 @@
   }
 
   backButton.addEventListener("click", goBack);
-  headerBackButton.addEventListener("click", goBack);
 
   saveUserButton.addEventListener("click", async () => {
     const name = fields.name.value.trim();
@@ -227,6 +245,7 @@
         address: fields.address.value.trim(),
         phone: fields.phone.value.trim(),
         relationship: fields.relationship.value,
+        clinic: fields.clinic.value,
         insurerNumber: fields.insurerNumber.value.trim(),
         insuredSymbolNumber: fields.insuredSymbolNumber.value.trim(),
         recipientNumber: fields.recipientNumber.value.trim(),
@@ -244,6 +263,7 @@
     }
   });
 
+  loadClinics();
   renderUserList();
 </script>
 </body>

@@ -10,7 +10,7 @@
 <div class="page">
 
   <div class="topbar">
-    <div class="app-title">🌿 いきいき治療院<span class="app-title-sub">同意書登録</span></div>
+    <a href="index.html" class="app-title">🌿 いきいき治療院<span class="app-title-sub">同意書登録</span></a>
   </div>
 
   <div class="wizard-grid">
@@ -27,6 +27,16 @@
 
     <div class="card">
       <p class="card-heading"><span class="badge">2</span>利用者をえらぶ</p>
+
+      <div class="field">
+        <label class="field-label">📋 取得状況で絞り込む</label>
+        <div class="pill-group" id="statusPillGroup"></div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">🏥 治療院で絞り込む</label>
+        <div class="pill-group" id="clinicPillGroup"></div>
+      </div>
 
       <div class="field">
         <label class="field-label" for="nameSearch">🔍 名前検索（あいまい検索でOK）</label>
@@ -155,6 +165,8 @@
 
   const typeAnma = document.getElementById("typeAnma");
   const typeShinkyu = document.getElementById("typeShinkyu");
+  const statusPillGroup = document.getElementById("statusPillGroup");
+  const clinicPillGroup = document.getElementById("clinicPillGroup");
   const nameSearch = document.getElementById("nameSearch");
   const searchResultList = document.getElementById("searchResultList");
   const searchEmptyHint = document.getElementById("searchEmptyHint");
@@ -184,9 +196,88 @@
 
   let users = [];
   let doctors = [];
+  let clinics = [];
+  let allConsents = [];
   let selectedUser = null;
   let userConsents = [];
   let searchPage = 1;
+  let statusFilter = "unobtained";
+  let clinicFilter = "all";
+
+  const STATUS_OPTIONS = [
+    { value: "unobtained", label: "未取得" },
+    { value: "obtained", label: "取得済み" },
+  ];
+
+  STATUS_OPTIONS.forEach((opt) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "pill-option" + (opt.value === statusFilter ? " active" : "");
+    btn.textContent = opt.label;
+    btn.addEventListener("click", () => {
+      statusFilter = opt.value;
+      document.querySelectorAll("#statusPillGroup .pill-option").forEach((el) => el.classList.remove("active"));
+      btn.classList.add("active");
+      searchPage = 1;
+      renderSearchResults();
+    });
+    statusPillGroup.appendChild(btn);
+  });
+
+  function renderClinicPills() {
+    clinicPillGroup.innerHTML = "";
+    [{ id: "all", name: "すべて" }, ...clinics].forEach((c) => {
+      const value = c.id === "all" ? "all" : c.name;
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "pill-option" + (value === clinicFilter ? " active" : "");
+      btn.textContent = c.name;
+      btn.addEventListener("click", () => {
+        clinicFilter = value;
+        document.querySelectorAll("#clinicPillGroup .pill-option").forEach((el) => el.classList.remove("active"));
+        btn.classList.add("active");
+        searchPage = 1;
+        renderSearchResults();
+      });
+      clinicPillGroup.appendChild(btn);
+    });
+  }
+
+  async function loadClinics() {
+    try {
+      clinics = await apiGet("/api/clinics");
+    } catch (err) {
+      showToast(err.message);
+    }
+    renderClinicPills();
+  }
+
+  async function loadAllConsents() {
+    try {
+      allConsents = await apiGet("/api/consents");
+    } catch (err) {
+      allConsents = [];
+      showToast(err.message);
+    }
+    renderSearchResults();
+  }
+
+  function isObtained(user) {
+    const consents = allConsents.filter((c) => c.userId === user.id);
+    if (typeAnma.checked || typeShinkyu.checked) {
+      return consents.some((c) => (typeAnma.checked && c.anma) || (typeShinkyu.checked && c.shinkyu));
+    }
+    return consents.length > 0;
+  }
+
+  typeAnma.addEventListener("change", () => {
+    searchPage = 1;
+    renderSearchResults();
+  });
+  typeShinkyu.addEventListener("change", () => {
+    searchPage = 1;
+    renderSearchResults();
+  });
 
   function toDateInputValue(date) {
     const y = date.getFullYear();
@@ -214,6 +305,7 @@
     row.innerHTML = `
       <div>
         <div class="user-list-row-name">${user.name}</div>
+        ${user.clinic ? `<div class="user-list-row-meta">${user.clinic}</div>` : ""}
       </div>
       <div class="user-list-row-check">✓ 選択中</div>
     `;
@@ -223,7 +315,9 @@
 
   function renderSearchResults() {
     const query = nameSearch.value.trim();
-    const matched = users.filter((u) => fuzzyMatch(query, u.name));
+    let matched = users.filter((u) => fuzzyMatch(query, u.name));
+    if (clinicFilter !== "all") matched = matched.filter((u) => (u.clinic || "") === clinicFilter);
+    matched = matched.filter((u) => isObtained(u) === (statusFilter === "obtained"));
     const totalPages = Math.max(1, Math.ceil(matched.length / PAGE_SIZE));
     if (searchPage > totalPages) searchPage = totalPages;
 
@@ -440,6 +534,7 @@
       });
       showToast("保存しました");
       resetForm();
+      loadAllConsents();
     } catch (err) {
       showToast(err.message);
     } finally {
@@ -451,6 +546,7 @@
     if (document.visibilityState === "visible") {
       loadUsers();
       loadDoctors();
+      loadAllConsents();
     }
   });
 
@@ -458,6 +554,8 @@
 
   loadUsers();
   loadDoctors();
+  loadClinics();
+  loadAllConsents();
 </script>
 </body>
 </html>

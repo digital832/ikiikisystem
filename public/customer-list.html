@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>顧客一覧</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="page">
+
+  <div class="topbar">
+    <a href="index.html" class="app-title">🌿 いきいき治療院<span class="app-title-sub">顧客一覧</span></a>
+  </div>
+
+  <div class="wizard-grid">
+    <div class="card">
+      <p class="card-heading"><span class="badge">👤</span><span id="formHeading">基本情報</span></p>
+
+      <div class="field">
+        <label class="field-label" for="name">名前<span class="required">必須</span></label>
+        <input class="text-input" type="text" id="name" placeholder="例：山田 花子" />
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="kana">フリガナ</label>
+        <input class="text-input" type="text" id="kana" placeholder="例：ヤマダ ハナコ" />
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="gender">性別</label>
+        <select class="select-input" id="gender">
+          <option value="">選択してください</option>
+          <option value="男">男</option>
+          <option value="女">女</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="birthDate">生年月日</label>
+        <input class="date-input" type="date" id="birthDate" />
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="address">住所</label>
+        <input class="text-input" type="text" id="address" placeholder="例：下関市一の宮住吉3丁目1-9-401号" />
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="phone">電話番号</label>
+        <input class="text-input" type="text" id="phone" inputmode="tel" placeholder="例：083-237-9115" />
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="relationship">被保険者との続柄</label>
+        <select class="select-input" id="relationship">
+          <option value="">選択してください</option>
+          <option value="本人">本人</option>
+          <option value="家族">家族</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="clinic">治療院</label>
+        <select class="select-input" id="clinic">
+          <option value="">選択してください</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="card-heading"><span class="badge">🩺</span>保険情報</p>
+
+      <div class="field">
+        <label class="field-label" for="insurerNumber">保険者番号</label>
+        <input class="text-input" type="text" id="insurerNumber" inputmode="numeric" placeholder="例：39352018" />
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="insuredSymbolNumber">被保険者証の記号番号</label>
+        <input class="text-input" type="text" id="insuredSymbolNumber" placeholder="例：04569059" />
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="recipientNumber">受給者番号</label>
+        <input class="text-input" type="text" id="recipientNumber" placeholder="後期高齢者などの場合" />
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="publicExpensePayerNumber">公費負担者番号</label>
+        <input class="text-input" type="text" id="publicExpensePayerNumber" placeholder="該当者のみ" />
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="publicExpenseRecipientNumber">公費受給者番号</label>
+        <input class="text-input" type="text" id="publicExpenseRecipientNumber" placeholder="該当者のみ" />
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="copayRatio">一部負担金の割合</label>
+        <select class="select-input" id="copayRatio">
+          <option value="">選択してください</option>
+          <option value="1割">1割</option>
+          <option value="2割">2割</option>
+          <option value="3割">3割</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="card" id="userListCard">
+      <p class="card-heading"><span class="badge">📋</span>登録済みの顧客</p>
+
+      <div id="userListLock" class="password-lock">
+        <p class="field-hint">閲覧にはパスワードが必要です</p>
+        <input class="text-input" type="password" id="userListPasswordInput" placeholder="パスワード" />
+        <p class="password-lock-error" id="userListPasswordError"></p>
+        <button class="word-button" type="button" id="userListUnlockButton">表示する</button>
+      </div>
+
+      <div id="userListContent" hidden>
+        <div id="userList" class="user-list"></div>
+        <p class="field-hint" id="userListEmptyHint" hidden>まだ登録されている顧客はいません。</p>
+        <button class="link-button" type="button" id="userListChangePasswordButton">🔒 パスワードを変更する</button>
+
+        <div id="passwordChangePanel" class="password-change-panel" hidden>
+          <div class="field">
+            <label class="field-label" for="currentPasswordInput">現在のパスワード</label>
+            <input class="text-input" type="password" id="currentPasswordInput" />
+          </div>
+          <div class="field">
+            <label class="field-label" for="newPasswordInput">新しいパスワード</label>
+            <input class="text-input" type="password" id="newPasswordInput" />
+          </div>
+          <div class="field">
+            <label class="field-label" for="newPasswordConfirmInput">新しいパスワード（確認）</label>
+            <input class="text-input" type="password" id="newPasswordConfirmInput" />
+          </div>
+          <button class="word-button" type="button" id="cancelPasswordChangeButton">キャンセル</button>
+          <button class="send-button" type="button" id="savePasswordChangeButton">パスワードを変更する</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-card">
+    <button class="word-button" type="button" id="cancelEditButton" hidden>編集をキャンセル</button>
+    <button class="word-button" type="button" id="backButton">← 戻る</button>
+    <button class="send-button" type="button" id="saveUserButton">✅ この内容で登録する</button>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  async function apiGet(url) {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || "通信に失敗しました");
+    return res.json();
+  }
+
+  async function apiSend(url, method, body) {
+    const res = await fetch(url, {
+      method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || "通信に失敗しました");
+    return res.json();
+  }
+
+  const fields = {
+    name: document.getElementById("name"),
+    kana: document.getElementById("kana"),
+    gender: document.getElementById("gender"),
+    birthDate: document.getElementById("birthDate"),
+    address: document.getElementById("address"),
+    phone: document.getElementById("phone"),
+    relationship: document.getElementById("relationship"),
+    clinic: document.getElementById("clinic"),
+    insurerNumber: document.getElementById("insurerNumber"),
+    insuredSymbolNumber: document.getElementById("insuredSymbolNumber"),
+    recipientNumber: document.getElementById("recipientNumber"),
+    publicExpensePayerNumber: document.getElementById("publicExpensePayerNumber"),
+    publicExpenseRecipientNumber: document.getElementById("publicExpenseRecipientNumber"),
+    copayRatio: document.getElementById("copayRatio"),
+  };
+  const backButton = document.getElementById("backButton");
+  const saveUserButton = document.getElementById("saveUserButton");
+  const cancelEditButton = document.getElementById("cancelEditButton");
+  const formHeading = document.getElementById("formHeading");
+  const userList = document.getElementById("userList");
+  const userListEmptyHint = document.getElementById("userListEmptyHint");
+  const toast = document.getElementById("toast");
+
+  const userListLock = document.getElementById("userListLock");
+  const userListContent = document.getElementById("userListContent");
+  const userListPasswordInput = document.getElementById("userListPasswordInput");
+  const userListPasswordError = document.getElementById("userListPasswordError");
+  const userListUnlockButton = document.getElementById("userListUnlockButton");
+  const userListChangePasswordButton = document.getElementById("userListChangePasswordButton");
+  const passwordChangePanel = document.getElementById("passwordChangePanel");
+  const currentPasswordInput = document.getElementById("currentPasswordInput");
+  const newPasswordInput = document.getElementById("newPasswordInput");
+  const newPasswordConfirmInput = document.getElementById("newPasswordConfirmInput");
+  const cancelPasswordChangeButton = document.getElementById("cancelPasswordChangeButton");
+  const savePasswordChangeButton = document.getElementById("savePasswordChangeButton");
+
+  const UNLOCK_KEY = "customerListUnlocked";
+
+  let editingId = null;
+
+  let toastTimer = null;
+  function showToast(message) {
+    toast.textContent = message;
+    toast.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove("show"), 2500);
+  }
+
+  function clearForm() {
+    Object.values(fields).forEach((el) => (el.value = ""));
+  }
+
+  async function loadClinics() {
+    let clinics = [];
+    try {
+      clinics = await apiGet("/api/clinics");
+    } catch (err) {
+      showToast(err.message);
+    }
+    clinics.forEach((c) => {
+      const opt = document.createElement("option");
+      opt.value = c.name;
+      opt.textContent = c.name;
+      fields.clinic.appendChild(opt);
+    });
+  }
+
+  function enterEditMode(user) {
+    editingId = user.id;
+    fields.name.value = user.name || "";
+    fields.kana.value = user.kana || "";
+    fields.gender.value = user.gender || "";
+    fields.birthDate.value = user.birthDate || "";
+    fields.address.value = user.address || "";
+    fields.phone.value = user.phone || "";
+    fields.relationship.value = user.relationship || "";
+    fields.clinic.value = user.clinic || "";
+    fields.insurerNumber.value = user.insurerNumber || "";
+    fields.insuredSymbolNumber.value = user.insuredSymbolNumber || "";
+    fields.recipientNumber.value = user.recipientNumber || "";
+    fields.publicExpensePayerNumber.value = user.publicExpensePayerNumber || "";
+    fields.publicExpenseRecipientNumber.value = user.publicExpenseRecipientNumber || "";
+    fields.copayRatio.value = user.copayRatio || "";
+    formHeading.textContent = "顧客を編集する";
+    saveUserButton.textContent = "✅ この内容で更新する";
+    cancelEditButton.hidden = false;
+    fields.name.focus();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function exitEditMode() {
+    editingId = null;
+    clearForm();
+    formHeading.textContent = "基本情報";
+    saveUserButton.textContent = "✅ この内容で登録する";
+    cancelEditButton.hidden = true;
+  }
+
+  cancelEditButton.addEventListener("click", exitEditMode);
+
+  async function renderUserList() {
+    userList.innerHTML = '<p class="field-hint">読み込み中...</p>';
+    let users;
+    try {
+      users = await apiGet("/api/users");
+    } catch (err) {
+      userList.innerHTML = "";
+      showToast(err.message);
+      return;
+    }
+    userList.innerHTML = "";
+    userListEmptyHint.hidden = users.length > 0;
+    users
+      .slice()
+      .reverse()
+      .forEach((u) => {
+        const row = document.createElement("div");
+        row.className = "user-list-row static";
+        const meta = [u.kana, u.gender, u.birthDate, u.phone, u.clinic].filter(Boolean).join(" / ");
+        row.innerHTML = `
+          <div class="user-list-row-info">
+            <div class="user-list-row-name">${u.name}</div>
+            ${meta ? `<div class="user-list-row-meta">${meta}</div>` : ""}
+          </div>
+          <div class="user-list-row-actions">
+            <button type="button" class="row-action-button edit">編集</button>
+            <button type="button" class="row-action-button delete">削除</button>
+          </div>
+        `;
+        row.querySelector(".edit").addEventListener("click", () => enterEditMode(u));
+        row.querySelector(".delete").addEventListener("click", () => deleteUser(u));
+        userList.appendChild(row);
+      });
+  }
+
+  async function deleteUser(u) {
+    if (!confirm(`「${u.name}」を削除しますか？`)) return;
+    try {
+      await apiSend(`/api/users/${u.id}`, "DELETE");
+      showToast("削除しました");
+      if (editingId === u.id) exitEditMode();
+      renderUserList();
+    } catch (err) {
+      showToast(err.message);
+    }
+  }
+
+  function goBack() {
+    if (history.length > 1) {
+      history.back();
+    } else {
+      window.close();
+      setTimeout(() => { location.href = "index.html"; }, 300);
+    }
+  }
+
+  backButton.addEventListener("click", goBack);
+
+  saveUserButton.addEventListener("click", async () => {
+    const name = fields.name.value.trim();
+    if (!name) {
+      showToast("名前を入力してください");
+      fields.name.focus();
+      return;
+    }
+    saveUserButton.disabled = true;
+    const body = {
+      name,
+      kana: fields.kana.value.trim(),
+      gender: fields.gender.value,
+      birthDate: fields.birthDate.value,
+      address: fields.address.value.trim(),
+      phone: fields.phone.value.trim(),
+      relationship: fields.relationship.value,
+      clinic: fields.clinic.value,
+      insurerNumber: fields.insurerNumber.value.trim(),
+      insuredSymbolNumber: fields.insuredSymbolNumber.value.trim(),
+      recipientNumber: fields.recipientNumber.value.trim(),
+      publicExpensePayerNumber: fields.publicExpensePayerNumber.value.trim(),
+      publicExpenseRecipientNumber: fields.publicExpenseRecipientNumber.value.trim(),
+      copayRatio: fields.copayRatio.value,
+    };
+    try {
+      if (editingId) {
+        await apiSend(`/api/users/${editingId}`, "PUT", body);
+        showToast("更新しました");
+        exitEditMode();
+      } else {
+        await apiSend("/api/users", "POST", body);
+        showToast("登録しました");
+        clearForm();
+      }
+      renderUserList();
+    } catch (err) {
+      showToast(err.message);
+    } finally {
+      saveUserButton.disabled = false;
+    }
+  });
+
+  function unlockUserList() {
+    userListLock.hidden = true;
+    userListContent.hidden = false;
+    renderUserList();
+  }
+
+  async function tryUnlock() {
+    const password = userListPasswordInput.value;
+    userListPasswordError.textContent = "";
+    userListUnlockButton.disabled = true;
+    try {
+      await apiSend("/api/customer-list-password/verify", "POST", { password });
+      sessionStorage.setItem(UNLOCK_KEY, "1");
+      userListPasswordInput.value = "";
+      unlockUserList();
+    } catch (err) {
+      userListPasswordError.textContent = err.message;
+    } finally {
+      userListUnlockButton.disabled = false;
+    }
+  }
+
+  userListUnlockButton.addEventListener("click", tryUnlock);
+  userListPasswordInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") tryUnlock();
+  });
+
+  userListChangePasswordButton.addEventListener("click", () => {
+    passwordChangePanel.hidden = !passwordChangePanel.hidden;
+  });
+
+  cancelPasswordChangeButton.addEventListener("click", () => {
+    currentPasswordInput.value = "";
+    newPasswordInput.value = "";
+    newPasswordConfirmInput.value = "";
+    passwordChangePanel.hidden = true;
+  });
+
+  savePasswordChangeButton.addEventListener("click", async () => {
+    const currentPassword = currentPasswordInput.value;
+    const newPassword = newPasswordInput.value;
+    const newPasswordConfirm = newPasswordConfirmInput.value;
+    if (!newPassword) {
+      showToast("新しいパスワードを入力してください");
+      return;
+    }
+    if (newPassword !== newPasswordConfirm) {
+      showToast("新しいパスワードが一致しません");
+      return;
+    }
+    savePasswordChangeButton.disabled = true;
+    try {
+      await apiSend("/api/customer-list-password/change", "POST", { currentPassword, newPassword });
+      showToast("パスワードを変更しました");
+      currentPasswordInput.value = "";
+      newPasswordInput.value = "";
+      newPasswordConfirmInput.value = "";
+      passwordChangePanel.hidden = true;
+    } catch (err) {
+      showToast(err.message);
+    } finally {
+      savePasswordChangeButton.disabled = false;
+    }
+  });
+
+  loadClinics();
+  if (sessionStorage.getItem(UNLOCK_KEY) === "1") {
+    unlockUserList();
+  }
+</script>
+</body>
+</html>
