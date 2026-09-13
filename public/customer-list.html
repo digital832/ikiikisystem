@@ -101,6 +101,24 @@
           <option value="">選択してください</option>
         </select>
       </div>
+
+      <div class="field">
+        <label class="field-label">💆 施術部位</label>
+        <div class="area-input-group" id="areaInputGroup">
+          <div class="area-input-row">
+            <span class="area-input-label">あん摩</span>
+            <input class="area-number-input" type="number" inputmode="numeric" min="0" placeholder="0" data-area="あん摩" />
+          </div>
+          <div class="area-input-row">
+            <span class="area-input-label">鍼灸</span>
+            <input class="area-number-input" type="number" inputmode="numeric" min="0" placeholder="0" data-area="鍼灸" />
+          </div>
+          <div class="area-input-row">
+            <span class="area-input-label">変形徒手</span>
+            <input class="area-number-input" type="number" inputmode="numeric" min="0" placeholder="0" data-area="変形徒手" />
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="card">
@@ -225,6 +243,8 @@
     publicExpenseRecipientNumber: document.getElementById("publicExpenseRecipientNumber"),
     copayRatio: document.getElementById("copayRatio"),
   };
+  const areaInputGroup = document.getElementById("areaInputGroup");
+  const areaNumberInputs = areaInputGroup.querySelectorAll(".area-number-input");
   const backButton = document.getElementById("backButton");
   const saveUserButton = document.getElementById("saveUserButton");
   const cancelEditButton = document.getElementById("cancelEditButton");
@@ -260,6 +280,23 @@
 
   function clearForm() {
     Object.values(fields).forEach((el) => (el.value = ""));
+    areaNumberInputs.forEach((input) => (input.value = ""));
+  }
+
+  function getAreaValues() {
+    const result = {};
+    areaNumberInputs.forEach((input) => {
+      const value = input.value.trim();
+      if (value) result[input.dataset.area] = value;
+    });
+    return result;
+  }
+
+  function setAreaValues(areas) {
+    areas = areas || {};
+    areaNumberInputs.forEach((input) => {
+      input.value = areas[input.dataset.area] || "";
+    });
   }
 
   async function loadClinics() {
@@ -327,6 +364,7 @@
     fields.publicExpensePayerNumber.value = user.publicExpensePayerNumber || "";
     fields.publicExpenseRecipientNumber.value = user.publicExpenseRecipientNumber || "";
     fields.copayRatio.value = user.copayRatio || "";
+    setAreaValues(user.areas);
     formHeading.textContent = "顧客を編集する";
     saveUserButton.textContent = "✅ この内容で更新する";
     cancelEditButton.hidden = false;
@@ -430,6 +468,7 @@
       publicExpensePayerNumber: fields.publicExpensePayerNumber.value.trim(),
       publicExpenseRecipientNumber: fields.publicExpenseRecipientNumber.value.trim(),
       copayRatio: fields.copayRatio.value,
+      areas: getAreaValues(),
     };
     try {
       if (editingId) {

@@ -43,6 +43,7 @@ app.post("/api/users", async (req, res) => {
       day1: (req.body.day1 || "").trim(),
       day2: (req.body.day2 || "").trim(),
       day3: (req.body.day3 || "").trim(),
+      areas: req.body.areas || {},
     });
     res.json(user);
   } catch (err) {
@@ -75,6 +76,7 @@ app.put("/api/users/:id", async (req, res) => {
       day1: (req.body.day1 || "").trim(),
       day2: (req.body.day2 || "").trim(),
       day3: (req.body.day3 || "").trim(),
+      areas: req.body.areas || {},
     });
     if (!user) return res.status(404).json({ error: "利用者が見つかりません" });
     res.json(user);
