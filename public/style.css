@@ -311,6 +311,31 @@ body {
   margin-top: 8px;
 }
 
+.mt-8 {
+  margin-top: 8px;
+}
+
+.subfield-label {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-sub);
+  margin: 14px 0 6px;
+}
+
+.subfield-label:first-child {
+  margin-top: 0;
+}
+
+.patient-info-box {
+  padding: 12px 14px;
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-input);
+  font-size: 14px;
+  color: var(--text-sub);
+  line-height: 1.7;
+}
+
 .section-divider {
   text-align: center;
   font-size: 14px;
@@ -541,6 +566,12 @@ body {
 }
 
 .registry-select-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.registry-new-group {
   display: flex;
   flex-direction: column;
   gap: 8px;

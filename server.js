@@ -336,7 +336,8 @@ app.post("/api/insurers", async (req, res) => {
   try {
     const number = (req.body.number || "").trim();
     if (!number) return res.status(400).json({ error: "保険者番号を入力してください" });
-    const insurer = await sheetsService.addInsurer(number);
+    const name = (req.body.name || "").trim();
+    const insurer = await sheetsService.addInsurer({ name, number });
     res.json(insurer);
   } catch (err) {
     console.error(err);
@@ -363,15 +364,37 @@ app.post("/api/consents", async (req, res) => {
     if (!body.anma && !body.shinkyu) {
       return res.status(400).json({ error: "あん摩・鍼灸のどちらかを選んでください" });
     }
+    const toAreaList = (value) => (Array.isArray(value) ? value.filter((v) => typeof v === "string" && v) : []);
     const consent = await sheetsService.addConsent({
       userId: body.userId,
       userName: body.userName,
       anma: !!body.anma,
       shinkyu: !!body.shinkyu,
       obtainedDate: body.obtainedDate,
-      content: (body.content || "").trim(),
-      symptom: (body.symptom || "").trim(),
       doctorName: body.doctorName || "",
+      consentKind: body.consentKind || "",
+      examDate: body.examDate || "",
+      onsetDate: body.onsetDate || "",
+      institutionName: (body.institutionName || "").trim(),
+      institutionAddress: (body.institutionAddress || "").trim(),
+      noticeConfirmed: !!body.noticeConfirmed,
+      diseaseName: (body.diseaseName || "").trim(),
+      muscleParesisAreas: toAreaList(body.muscleParesisAreas),
+      jointContractureAreas: toAreaList(body.jointContractureAreas),
+      jointContractureOther: (body.jointContractureOther || "").trim(),
+      numbnessAreas: toAreaList(body.numbnessAreas),
+      painAreas: toAreaList(body.painAreas),
+      motorDysfunctionAreas: toAreaList(body.motorDysfunctionAreas),
+      symptomOther: (body.symptomOther || "").trim(),
+      edemaDisuse: !!body.edemaDisuse,
+      massageAreas: toAreaList(body.massageAreas),
+      manipulationAreas: toAreaList(body.manipulationAreas),
+      visitNeed: body.visitNeed || "",
+      visitReason: (body.visitReason || "").trim(),
+      careLevel: (body.careLevel || "").trim(),
+      shinkyuDiseases: toAreaList(body.shinkyuDiseases),
+      shinkyuDiseaseOther: (body.shinkyuDiseaseOther || "").trim(),
+      notes: (body.notes || "").trim(),
     });
     res.json(consent);
   } catch (err) {

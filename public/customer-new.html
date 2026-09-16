@@ -148,7 +148,10 @@
             <option value="">選択してください</option>
             <option value="__new__">＋ 新しい保険者番号を登録</option>
           </select>
-          <input class="text-input" type="text" id="insurerNumberNew" inputmode="numeric" placeholder="例：39352018" hidden />
+          <div class="registry-new-group" id="insurerNewGroup" hidden>
+            <input class="text-input" type="text" id="insurerNameNew" placeholder="保険者名（例：山口県後期高齢者医療広域連合）" />
+            <input class="text-input" type="text" id="insurerNumberNew" inputmode="numeric" placeholder="保険者番号（例：39352018）" />
+          </div>
         </div>
       </div>
 
@@ -232,6 +235,7 @@
     day3: document.getElementById("day3"),
     firstVisitDate: document.getElementById("firstVisitDate"),
     insurerNumberSelect: document.getElementById("insurerNumberSelect"),
+    insurerNameNew: document.getElementById("insurerNameNew"),
     insurerNumberNew: document.getElementById("insurerNumberNew"),
     insuredSymbolNumber: document.getElementById("insuredSymbolNumber"),
     recipientNumber: document.getElementById("recipientNumber"),
@@ -241,6 +245,7 @@
   };
   const areaInputGroup = document.getElementById("areaInputGroup");
   const areaNumberInputs = areaInputGroup.querySelectorAll(".area-number-input");
+  const insurerNewGroup = document.getElementById("insurerNewGroup");
   const backButton = document.getElementById("backButton");
   const saveUserButton = document.getElementById("saveUserButton");
   const cancelEditButton = document.getElementById("cancelEditButton");
@@ -261,7 +266,7 @@
     Object.values(fields).forEach((el) => (el.value = ""));
     areaNumberInputs.forEach((input) => (input.value = ""));
     resetAddressFields();
-    fields.insurerNumberNew.hidden = true;
+    insurerNewGroup.hidden = true;
     renderInsurerOptions("");
   }
 
@@ -361,7 +366,7 @@
     insurerNumbers.forEach((i) => {
       const opt = document.createElement("option");
       opt.value = i.number;
-      opt.textContent = i.number;
+      opt.textContent = i.name ? `${i.name}｜${i.number}` : i.number;
       select.appendChild(opt);
     });
     const newOpt = document.createElement("option");
@@ -383,10 +388,11 @@
 
   fields.insurerNumberSelect.addEventListener("change", () => {
     if (fields.insurerNumberSelect.value === "__new__") {
-      fields.insurerNumberNew.hidden = false;
-      fields.insurerNumberNew.focus();
+      insurerNewGroup.hidden = false;
+      fields.insurerNameNew.focus();
     } else {
-      fields.insurerNumberNew.hidden = true;
+      insurerNewGroup.hidden = true;
+      fields.insurerNameNew.value = "";
       fields.insurerNumberNew.value = "";
     }
   });
@@ -402,11 +408,13 @@
     number = (number || "").trim();
     if (!number || insurerNumbers.some((i) => i.number === number)) {
       renderInsurerOptions(number);
-      fields.insurerNumberNew.hidden = true;
+      insurerNewGroup.hidden = true;
+      fields.insurerNameNew.value = "";
       fields.insurerNumberNew.value = "";
     } else {
       renderInsurerOptions("__new__");
-      fields.insurerNumberNew.hidden = false;
+      insurerNewGroup.hidden = false;
+      fields.insurerNameNew.value = "";
       fields.insurerNumberNew.value = number;
     }
   }
@@ -550,7 +558,7 @@
     try {
       if (insurerNumber && !insurerNumbers.some((i) => i.number === insurerNumber)) {
         try {
-          const created = await apiSend("/api/insurers", "POST", { number: insurerNumber });
+          const created = await apiSend("/api/insurers", "POST", { name: fields.insurerNameNew.value.trim(), number: insurerNumber });
           insurerNumbers.push(created);
         } catch (err) {
           // 登録リストへの追加に失敗しても、顧客登録自体は続行する

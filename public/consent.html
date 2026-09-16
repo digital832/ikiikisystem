@@ -56,31 +56,121 @@
       <p class="card-heading"><span class="badge">3</span>同意書の内容を入力する</p>
 
       <div class="field">
-        <label class="field-label">👤 名前</label>
+        <label class="field-label">👤 患者</label>
         <div class="selected-name-display" id="selectedNameDisplay">未選択</div>
-      </div>
-
-      <div class="field">
-        <label class="field-label" for="obtainedDate">📅 取得日</label>
-        <input class="date-input" type="date" id="obtainedDate" />
+        <p class="patient-info-box mt-8" id="selectedPatientInfo">住所：－／生年月日：－</p>
       </div>
 
       <div class="field">
         <div class="field-label-row">
-          <label class="field-label" for="consentContent">📝 同意内容</label>
-          <label class="checkbox-row"><input type="checkbox" id="sameAsLastCheckbox" />前回と同じ</label>
+          <label class="field-label" for="obtainedDate">📅 取得日（記録日）</label>
+          <label class="checkbox-row"><input type="checkbox" id="sameAsLastCheckbox" />前回と同じ内容</label>
         </div>
-        <textarea class="textarea-input" id="consentContent" placeholder="同意内容を入力してください"></textarea>
-        <p class="field-hint" id="noLastHint" hidden>この利用者の過去の同意書がまだありません。</p>
+        <input class="date-input" type="date" id="obtainedDate" />
+        <p class="field-hint" id="noLastHint" hidden>この利用者・この種別の過去の同意書がまだありません。</p>
+      </div>
+
+      <div class="field" id="diseaseNameField">
+        <label class="field-label" for="diseaseNameAnma">📋 傷病名</label>
+        <input class="text-input" type="text" id="diseaseNameAnma" placeholder="例：変形性膝関節症" />
+      </div>
+
+      <div class="field" id="shinkyuDiseaseField" hidden>
+        <label class="field-label">📋 病名</label>
+        <div class="checkbox-group" id="grpShinkyuDisease"></div>
+        <input class="text-input mt-8" type="text" id="shinkyuDiseaseOther" placeholder="その他の病名（該当する場合）" />
       </div>
 
       <div class="field">
-        <label class="field-label" for="symptom">🩹 症状</label>
-        <textarea class="textarea-input" id="symptom" placeholder="症状を入力してください"></textarea>
+        <label class="field-label" for="onsetDate">🗓 発病年月日</label>
+        <div class="facility-select-row">
+          <input class="date-input" type="date" id="onsetDate" />
+          <label class="checkbox-row"><input type="checkbox" id="onsetDateUnknown" />不詳</label>
+        </div>
       </div>
 
       <div class="field">
-        <label class="field-label" for="doctorSelect">🧑‍⚕️ 医師名</label>
+        <label class="field-label">✅ 同意区分</label>
+        <div class="checkbox-group">
+          <label class="checkbox-row"><input type="radio" name="consentKind" id="consentKindFirst" value="初回の同意" />初回の同意</label>
+          <label class="checkbox-row"><input type="radio" name="consentKind" id="consentKindRenewal" value="再同意" />再同意</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="examDate">🩺 診察日</label>
+        <input class="date-input" type="date" id="examDate" />
+      </div>
+
+      <div class="field" id="anmaSymptomFields" hidden>
+        <label class="field-label">🩹 症状</label>
+
+        <p class="subfield-label">筋麻痺・筋萎縮のある部位</p>
+        <div class="checkbox-group" id="grpMuscleParesis"></div>
+
+        <p class="subfield-label">関節拘縮のある部位</p>
+        <div class="checkbox-group" id="grpJointContracture"></div>
+        <input class="text-input mt-8" type="text" id="jointContractureOther" placeholder="その他の部位（該当する場合）" />
+
+        <p class="subfield-label">しびれのある部位</p>
+        <div class="checkbox-group" id="grpNumbness"></div>
+
+        <p class="subfield-label">痛みのある部位</p>
+        <div class="checkbox-group" id="grpPain"></div>
+
+        <p class="subfield-label">運動機能障害・筋力低下のある部位</p>
+        <div class="checkbox-group" id="grpMotorDysfunction"></div>
+
+        <p class="subfield-label">その他の症状</p>
+        <input class="text-input" type="text" id="symptomOther" placeholder="例：関節リウマチによる痛み" />
+        <label class="checkbox-row mt-8"><input type="checkbox" id="edemaDisuse" />浮腫・廃用症候群</label>
+      </div>
+
+      <div class="field" id="anmaTreatmentFields" hidden>
+        <label class="field-label">💆 施術の種類・施術部位</label>
+
+        <p class="subfield-label">マッサージを行う部位</p>
+        <div class="checkbox-group" id="grpMassage"></div>
+
+        <p class="subfield-label">変形徒手矯正術を行う部位</p>
+        <div class="checkbox-group" id="grpManipulation"></div>
+      </div>
+
+      <div class="field" id="anmaVisitFields" hidden>
+        <label class="field-label">🚗 訪問又は往療</label>
+        <div class="checkbox-group">
+          <label class="checkbox-row"><input type="radio" name="visitNeed" id="visitNeedYes" value="必要とする" />必要とする（通所が困難）</label>
+          <label class="checkbox-row"><input type="radio" name="visitNeed" id="visitNeedNo" value="必要としない" />必要としない</label>
+        </div>
+        <div id="visitDetailFields" hidden>
+          <p class="subfield-label">訪問又は往療を必要とする理由</p>
+          <input class="text-input" type="text" id="visitReason" placeholder="例：独歩による公共交通機関を使っての外出が困難" />
+          <p class="subfield-label">介護保険の要介護度</p>
+          <input class="text-input" type="text" id="careLevel" placeholder="分かれば記載（任意）" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="notes">📝 注意事項等</label>
+        <textarea class="textarea-input" id="notes" placeholder="施術に当たって注意すべき事項等（任意）"></textarea>
+      </div>
+
+      <div class="field">
+        <label class="checkbox-row"><input type="checkbox" id="noticeConfirmed" />同意書交付の留意点（裏面）を確認しました</label>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="institutionName">🏥 医療機関名</label>
+        <input class="text-input" type="text" id="institutionName" placeholder="例：〇〇クリニック" />
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="institutionAddress">📍 所在地</label>
+        <input class="text-input" type="text" id="institutionAddress" placeholder="医療機関の所在地" />
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="doctorSelect">🧑‍⚕️ 保険医氏名</label>
         <div class="facility-select-row">
           <select class="select-input" id="doctorSelect"></select>
           <button class="facility-add-button" type="button" id="newDoctorButton">＋ 新規登録</button>
@@ -174,11 +264,34 @@
   const newUserLink = document.getElementById("newUserLink");
   const selectedUserCard = document.getElementById("selectedUserCard");
   const selectedNameDisplay = document.getElementById("selectedNameDisplay");
+  const selectedPatientInfo = document.getElementById("selectedPatientInfo");
   const obtainedDate = document.getElementById("obtainedDate");
-  const consentContent = document.getElementById("consentContent");
   const sameAsLastCheckbox = document.getElementById("sameAsLastCheckbox");
   const noLastHint = document.getElementById("noLastHint");
-  const symptom = document.getElementById("symptom");
+  const diseaseNameField = document.getElementById("diseaseNameField");
+  const diseaseNameAnma = document.getElementById("diseaseNameAnma");
+  const shinkyuDiseaseField = document.getElementById("shinkyuDiseaseField");
+  const shinkyuDiseaseOther = document.getElementById("shinkyuDiseaseOther");
+  const onsetDate = document.getElementById("onsetDate");
+  const onsetDateUnknown = document.getElementById("onsetDateUnknown");
+  const consentKindFirst = document.getElementById("consentKindFirst");
+  const consentKindRenewal = document.getElementById("consentKindRenewal");
+  const examDate = document.getElementById("examDate");
+  const anmaSymptomFields = document.getElementById("anmaSymptomFields");
+  const jointContractureOther = document.getElementById("jointContractureOther");
+  const symptomOther = document.getElementById("symptomOther");
+  const edemaDisuse = document.getElementById("edemaDisuse");
+  const anmaTreatmentFields = document.getElementById("anmaTreatmentFields");
+  const anmaVisitFields = document.getElementById("anmaVisitFields");
+  const visitNeedYes = document.getElementById("visitNeedYes");
+  const visitNeedNo = document.getElementById("visitNeedNo");
+  const visitDetailFields = document.getElementById("visitDetailFields");
+  const visitReason = document.getElementById("visitReason");
+  const careLevel = document.getElementById("careLevel");
+  const notes = document.getElementById("notes");
+  const noticeConfirmed = document.getElementById("noticeConfirmed");
+  const institutionName = document.getElementById("institutionName");
+  const institutionAddress = document.getElementById("institutionAddress");
   const doctorSelect = document.getElementById("doctorSelect");
   const newDoctorButton = document.getElementById("newDoctorButton");
   const consentHistoryList = document.getElementById("consentHistoryList");
@@ -186,6 +299,68 @@
   const saveButton = document.getElementById("saveButton");
   const backButton = document.getElementById("backButton");
   const toast = document.getElementById("toast");
+
+  // ---- 部位チェックボックス群 ----
+
+  const BODY_PARTS_5 = ["躯幹", "右上肢", "左上肢", "右下肢", "左下肢"];
+  const BODY_PARTS_4 = ["右上肢", "左上肢", "右下肢", "左下肢"];
+  const JOINT_PARTS = ["右肩", "右肘", "右手首", "右股関節", "右膝", "右足首", "左肩", "左肘", "左手首", "左股関節", "左膝", "左足首"];
+  const SHINKYU_DISEASES = ["神経痛", "リウマチ", "頸腕症候群", "五十肩", "腰痛症", "頸椎捻挫後遺症"];
+
+  function renderCheckboxGroup(containerId, options, name) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = options
+      .map((opt) => `<label class="checkbox-row"><input type="checkbox" name="${name}" value="${opt}" />${opt}</label>`)
+      .join("");
+  }
+
+  function getCheckedValues(containerId) {
+    return Array.from(document.querySelectorAll(`#${containerId} input:checked`)).map((el) => el.value);
+  }
+
+  function setCheckedValues(containerId, values) {
+    const set = new Set(values || []);
+    document.querySelectorAll(`#${containerId} input`).forEach((el) => {
+      el.checked = set.has(el.value);
+    });
+  }
+
+  renderCheckboxGroup("grpMuscleParesis", BODY_PARTS_5, "muscleParesis");
+  renderCheckboxGroup("grpJointContracture", JOINT_PARTS, "jointContracture");
+  renderCheckboxGroup("grpNumbness", BODY_PARTS_5, "numbness");
+  renderCheckboxGroup("grpPain", BODY_PARTS_5, "pain");
+  renderCheckboxGroup("grpMotorDysfunction", BODY_PARTS_5, "motorDysfunction");
+  renderCheckboxGroup("grpMassage", BODY_PARTS_5, "massage");
+  renderCheckboxGroup("grpManipulation", BODY_PARTS_4, "manipulation");
+  renderCheckboxGroup("grpShinkyuDisease", SHINKYU_DISEASES, "shinkyuDisease");
+
+  // ---- 種別（あん摩／鍼灸）に応じた表示切り替え ----
+
+  function currentType() {
+    if (typeAnma.checked) return "anma";
+    if (typeShinkyu.checked) return "shinkyu";
+    return null;
+  }
+
+  function updateTypeVisibility() {
+    const type = currentType();
+    diseaseNameField.hidden = type !== "anma";
+    anmaSymptomFields.hidden = type !== "anma";
+    anmaTreatmentFields.hidden = type !== "anma";
+    anmaVisitFields.hidden = type !== "anma";
+    shinkyuDiseaseField.hidden = type !== "shinkyu";
+  }
+
+  onsetDateUnknown.addEventListener("change", () => {
+    onsetDate.disabled = onsetDateUnknown.checked;
+    if (onsetDateUnknown.checked) onsetDate.value = "";
+  });
+
+  function updateVisitDetailVisibility() {
+    visitDetailFields.hidden = !visitNeedYes.checked;
+  }
+  visitNeedYes.addEventListener("change", updateVisitDetailVisibility);
+  visitNeedNo.addEventListener("change", updateVisitDetailVisibility);
 
   const newDoctorOverlay = document.getElementById("newDoctorOverlay");
   const newDoctorName = document.getElementById("newDoctorName");
@@ -273,10 +448,12 @@
   typeAnma.addEventListener("change", () => {
     searchPage = 1;
     renderSearchResults();
+    updateTypeVisibility();
   });
   typeShinkyu.addEventListener("change", () => {
     searchPage = 1;
     renderSearchResults();
+    updateTypeVisibility();
   });
 
   function toDateInputValue(date) {
@@ -358,8 +535,10 @@
     selectedUser = user;
     selectedUserCard.hidden = false;
     selectedNameDisplay.textContent = user.name;
+    selectedPatientInfo.textContent = `住所：${user.address || "－"}／生年月日：${user.birthDate || "－"}`;
     sameAsLastCheckbox.checked = false;
     noLastHint.hidden = true;
+    updateTypeVisibility();
     renderSearchResults();
     await loadUserConsents();
   }
@@ -368,6 +547,18 @@
 
   function formatConsentTypes(c) {
     return [c.anma ? "あん摩" : "", c.shinkyu ? "鍼灸" : ""].filter(Boolean).join("・");
+  }
+
+  function formatConsentSummary(c) {
+    const parts = [];
+    if (c.anma && c.diseaseName) parts.push(c.diseaseName);
+    if (c.shinkyu) {
+      const diseases = [...(c.shinkyuDiseases || []), c.shinkyuDiseaseOther].filter(Boolean).join("・");
+      if (diseases) parts.push(diseases);
+    }
+    if (c.consentKind) parts.push(c.consentKind);
+    if (c.examDate) parts.push(`診察日:${c.examDate}`);
+    return parts.join("　|　");
   }
 
   async function loadUserConsents() {
@@ -383,28 +574,62 @@
     userConsents.forEach((c) => {
       const row = document.createElement("div");
       row.className = "record-row";
+      const summary = formatConsentSummary(c);
       row.innerHTML = `
         <div class="record-row-top">
           <div class="record-row-name">${formatConsentTypes(c) || "種別未設定"}</div>
           <div class="record-row-date">${c.obtainedDate}</div>
         </div>
-        <div class="record-row-meta">${c.doctorName || "医師未設定"}${c.symptom ? `　|　${c.symptom}` : ""}</div>
-        ${c.content ? `<div class="record-row-note">${c.content}</div>` : ""}
+        <div class="record-row-meta">${c.doctorName || "医師未設定"}${summary ? `　|　${summary}` : ""}</div>
+        ${c.notes ? `<div class="record-row-note">${c.notes}</div>` : ""}
       `;
       consentHistoryList.appendChild(row);
     });
   }
 
+  function applyConsentToForm(c) {
+    diseaseNameAnma.value = c.diseaseName || "";
+    onsetDateUnknown.checked = c.onsetDate === "不詳";
+    onsetDate.disabled = onsetDateUnknown.checked;
+    onsetDate.value = onsetDateUnknown.checked ? "" : c.onsetDate || "";
+    consentKindFirst.checked = c.consentKind === "初回の同意";
+    consentKindRenewal.checked = c.consentKind === "再同意";
+    examDate.value = c.examDate || "";
+    setCheckedValues("grpMuscleParesis", c.muscleParesisAreas);
+    setCheckedValues("grpJointContracture", c.jointContractureAreas);
+    jointContractureOther.value = c.jointContractureOther || "";
+    setCheckedValues("grpNumbness", c.numbnessAreas);
+    setCheckedValues("grpPain", c.painAreas);
+    setCheckedValues("grpMotorDysfunction", c.motorDysfunctionAreas);
+    symptomOther.value = c.symptomOther || "";
+    edemaDisuse.checked = !!c.edemaDisuse;
+    setCheckedValues("grpMassage", c.massageAreas);
+    setCheckedValues("grpManipulation", c.manipulationAreas);
+    visitNeedYes.checked = c.visitNeed === "必要とする";
+    visitNeedNo.checked = c.visitNeed === "必要としない";
+    updateVisitDetailVisibility();
+    visitReason.value = c.visitReason || "";
+    careLevel.value = c.careLevel || "";
+    setCheckedValues("grpShinkyuDisease", c.shinkyuDiseases);
+    shinkyuDiseaseOther.value = c.shinkyuDiseaseOther || "";
+    notes.value = c.notes || "";
+    noticeConfirmed.checked = !!c.noticeConfirmed;
+    institutionName.value = c.institutionName || "";
+    institutionAddress.value = c.institutionAddress || "";
+    if (c.doctorName) doctorSelect.value = c.doctorName;
+  }
+
   sameAsLastCheckbox.addEventListener("change", () => {
     if (!sameAsLastCheckbox.checked) return;
-    const last = userConsents[0];
+    const type = currentType();
+    const last = userConsents.find((c) => (type === "anma" && c.anma) || (type === "shinkyu" && c.shinkyu));
     if (!last) {
       sameAsLastCheckbox.checked = false;
       noLastHint.hidden = false;
       return;
     }
     noLastHint.hidden = true;
-    consentContent.value = last.content;
+    applyConsentToForm(last);
   });
 
   // ---- 医師の選択・新規登録 ----
@@ -485,12 +710,40 @@
     userConsents = [];
     selectedUserCard.hidden = true;
     selectedNameDisplay.textContent = "未選択";
+    selectedPatientInfo.textContent = "住所：－／生年月日：－";
     obtainedDate.value = toDateInputValue(new Date());
-    consentContent.value = "";
     sameAsLastCheckbox.checked = false;
     noLastHint.hidden = true;
-    symptom.value = "";
+    diseaseNameAnma.value = "";
+    setCheckedValues("grpShinkyuDisease", []);
+    shinkyuDiseaseOther.value = "";
+    onsetDate.value = "";
+    onsetDate.disabled = false;
+    onsetDateUnknown.checked = false;
+    consentKindFirst.checked = false;
+    consentKindRenewal.checked = false;
+    examDate.value = "";
+    setCheckedValues("grpMuscleParesis", []);
+    setCheckedValues("grpJointContracture", []);
+    jointContractureOther.value = "";
+    setCheckedValues("grpNumbness", []);
+    setCheckedValues("grpPain", []);
+    setCheckedValues("grpMotorDysfunction", []);
+    symptomOther.value = "";
+    edemaDisuse.checked = false;
+    setCheckedValues("grpMassage", []);
+    setCheckedValues("grpManipulation", []);
+    visitNeedYes.checked = false;
+    visitNeedNo.checked = false;
+    updateVisitDetailVisibility();
+    visitReason.value = "";
+    careLevel.value = "";
+    notes.value = "";
+    noticeConfirmed.checked = false;
+    institutionName.value = "";
+    institutionAddress.value = "";
     doctorSelect.selectedIndex = 0;
+    updateTypeVisibility();
     nameSearch.value = "";
     searchPage = 1;
     renderSearchResults();
@@ -528,9 +781,30 @@
         anma: typeAnma.checked,
         shinkyu: typeShinkyu.checked,
         obtainedDate: obtainedDate.value,
-        content: consentContent.value.trim(),
-        symptom: symptom.value.trim(),
         doctorName: doctorSelect.value,
+        consentKind: consentKindFirst.checked ? "初回の同意" : consentKindRenewal.checked ? "再同意" : "",
+        examDate: examDate.value,
+        onsetDate: onsetDateUnknown.checked ? "不詳" : onsetDate.value,
+        institutionName: institutionName.value.trim(),
+        institutionAddress: institutionAddress.value.trim(),
+        noticeConfirmed: noticeConfirmed.checked,
+        diseaseName: diseaseNameAnma.value.trim(),
+        muscleParesisAreas: getCheckedValues("grpMuscleParesis"),
+        jointContractureAreas: getCheckedValues("grpJointContracture"),
+        jointContractureOther: jointContractureOther.value.trim(),
+        numbnessAreas: getCheckedValues("grpNumbness"),
+        painAreas: getCheckedValues("grpPain"),
+        motorDysfunctionAreas: getCheckedValues("grpMotorDysfunction"),
+        symptomOther: symptomOther.value.trim(),
+        edemaDisuse: edemaDisuse.checked,
+        massageAreas: getCheckedValues("grpMassage"),
+        manipulationAreas: getCheckedValues("grpManipulation"),
+        visitNeed: visitNeedYes.checked ? "必要とする" : visitNeedNo.checked ? "必要としない" : "",
+        visitReason: visitReason.value.trim(),
+        careLevel: careLevel.value.trim(),
+        shinkyuDiseases: getCheckedValues("grpShinkyuDisease"),
+        shinkyuDiseaseOther: shinkyuDiseaseOther.value.trim(),
+        notes: notes.value.trim(),
       });
       showToast("保存しました");
       resetForm();
@@ -552,6 +826,8 @@
 
   // ---- 初回描画 ----
 
+  updateTypeVisibility();
+  updateVisitDetailVisibility();
   loadUsers();
   loadDoctors();
   loadClinics();
