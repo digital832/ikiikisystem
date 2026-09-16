@@ -44,6 +44,7 @@ app.post("/api/users", async (req, res) => {
       day2: (req.body.day2 || "").trim(),
       day3: (req.body.day3 || "").trim(),
       areas: req.body.areas || {},
+      firstVisitDate: (req.body.firstVisitDate || "").trim(),
     });
     res.json(user);
   } catch (err) {
@@ -77,6 +78,7 @@ app.put("/api/users/:id", async (req, res) => {
       day2: (req.body.day2 || "").trim(),
       day3: (req.body.day3 || "").trim(),
       areas: req.body.areas || {},
+      firstVisitDate: (req.body.firstVisitDate || "").trim(),
     });
     if (!user) return res.status(404).json({ error: "利用者が見つかりません" });
     res.json(user);
@@ -317,6 +319,28 @@ app.delete("/api/employees/:id", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "スタッフの削除に失敗しました" });
+  }
+});
+
+app.get("/api/insurers", async (req, res) => {
+  try {
+    const insurers = await sheetsService.getInsurers();
+    res.json(insurers);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "保険者番号の取得に失敗しました" });
+  }
+});
+
+app.post("/api/insurers", async (req, res) => {
+  try {
+    const number = (req.body.number || "").trim();
+    if (!number) return res.status(400).json({ error: "保険者番号を入力してください" });
+    const insurer = await sheetsService.addInsurer(number);
+    res.json(insurer);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "保険者番号の登録に失敗しました" });
   }
 });
 

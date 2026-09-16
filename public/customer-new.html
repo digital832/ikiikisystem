@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>顧客登録</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="page">
+
+  <div class="topbar">
+    <a href="index.html" class="app-title">🌿 いきいき治療院<span class="app-title-sub">顧客登録</span></a>
+  </div>
+
+  <div class="wizard-grid">
+    <div class="card">
+      <p class="card-heading"><span class="badge">👤</span><span id="formHeading">基本情報</span></p>
+
+      <div class="field">
+        <label class="field-label" for="name">名前<span class="required">必須</span></label>
+        <input class="text-input" type="text" id="name" placeholder="例：山田 花子" />
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="kana">フリガナ</label>
+        <input class="text-input" type="text" id="kana" placeholder="例：ヤマダ ハナコ" />
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="gender">性別</label>
+        <select class="select-input" id="gender">
+          <option value="">選択してください</option>
+          <option value="男">男</option>
+          <option value="女">女</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label class="field-label">生年月日</label>
+        <div class="date-part-group">
+          <input class="date-part-input year" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="4" id="birthYear" placeholder="年" />
+          <span class="date-part-unit">年</span>
+          <input class="date-part-input" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="2" id="birthMonth" placeholder="月" />
+          <span class="date-part-unit">月</span>
+          <input class="date-part-input" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="2" id="birthDay" placeholder="日" />
+          <span class="date-part-unit">日</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">住所</label>
+        <div class="address-part-group">
+          <input class="text-input" type="text" id="addressPrefecture" placeholder="都道府県" value="山口県" />
+          <input class="text-input" type="text" id="addressCity" placeholder="市区町村" value="下関市" />
+          <input class="text-input" type="text" id="addressStreet" placeholder="例：一の宮住吉3丁目1-9" />
+          <input class="text-input" type="text" id="addressBuilding" placeholder="建物名・部屋番号（任意）" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="phone">電話番号</label>
+        <input class="text-input" type="text" id="phone" inputmode="tel" placeholder="例：083-237-9115" />
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="relationship">被保険者との続柄</label>
+        <select class="select-input" id="relationship">
+          <option value="">選択してください</option>
+          <option value="本人">本人</option>
+          <option value="家族">家族</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="clinic">治療院</label>
+        <select class="select-input" id="clinic">
+          <option value="">選択してください</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="practitioner1">👤 担当施術師１</label>
+        <select class="select-input" id="practitioner1">
+          <option value="">選択してください</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="practitioner2">👤 担当施術師２</label>
+        <select class="select-input" id="practitioner2">
+          <option value="">選択してください</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="day1">📅 曜日１</label>
+        <select class="select-input" id="day1">
+          <option value="">選択してください</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="day2">📅 曜日２</label>
+        <select class="select-input" id="day2">
+          <option value="">選択してください</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="day3">📅 曜日３</label>
+        <select class="select-input" id="day3">
+          <option value="">選択してください</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="firstVisitDate">📅 初診日</label>
+        <input class="date-input" type="date" id="firstVisitDate" />
+      </div>
+
+      <div class="field">
+        <label class="field-label">💆 施術部位</label>
+        <div class="area-input-group" id="areaInputGroup">
+          <div class="area-input-row">
+            <span class="area-input-label">あん摩</span>
+            <input class="area-number-input" type="number" inputmode="numeric" min="0" placeholder="0" data-area="あん摩" />
+          </div>
+          <div class="area-input-row">
+            <span class="area-input-label">鍼灸</span>
+            <input class="area-number-input" type="number" inputmode="numeric" min="0" placeholder="0" data-area="鍼灸" />
+          </div>
+          <div class="area-input-row">
+            <span class="area-input-label">変形徒手</span>
+            <input class="area-number-input" type="number" inputmode="numeric" min="0" placeholder="0" data-area="変形徒手" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="card-heading"><span class="badge">🩺</span>保険情報</p>
+
+      <div class="field">
+        <label class="field-label" for="insurerNumberSelect">保険者番号</label>
+        <div class="registry-select-group">
+          <select class="select-input" id="insurerNumberSelect">
+            <option value="">選択してください</option>
+            <option value="__new__">＋ 新しい保険者番号を登録</option>
+          </select>
+          <input class="text-input" type="text" id="insurerNumberNew" inputmode="numeric" placeholder="例：39352018" hidden />
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="insuredSymbolNumber">被保険者証の記号番号</label>
+        <input class="text-input" type="text" id="insuredSymbolNumber" placeholder="例：04569059" />
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="recipientNumber">受給者番号</label>
+        <input class="text-input" type="text" id="recipientNumber" placeholder="後期高齢者などの場合" />
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="publicExpensePayerNumber">公費負担者番号</label>
+        <input class="text-input" type="text" id="publicExpensePayerNumber" placeholder="該当者のみ" />
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="publicExpenseRecipientNumber">公費受給者番号</label>
+        <input class="text-input" type="text" id="publicExpenseRecipientNumber" placeholder="該当者のみ" />
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="copayRatio">一部負担金の割合</label>
+        <select class="select-input" id="copayRatio">
+          <option value="">選択してください</option>
+          <option value="1割">1割</option>
+          <option value="2割">2割</option>
+          <option value="3割">3割</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-card">
+    <button class="word-button" type="button" id="cancelEditButton" hidden>編集をキャンセル</button>
+    <button class="word-button" type="button" id="backButton">← 戻る</button>
+    <button class="send-button" type="button" id="saveUserButton">✅ この内容で登録する</button>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  async function apiGet(url) {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || "通信に失敗しました");
+    return res.json();
+  }
+
+  async function apiSend(url, method, body) {
+    const res = await fetch(url, {
+      method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || "通信に失敗しました");
+    return res.json();
+  }
+
+  const fields = {
+    name: document.getElementById("name"),
+    kana: document.getElementById("kana"),
+    gender: document.getElementById("gender"),
+    birthYear: document.getElementById("birthYear"),
+    birthMonth: document.getElementById("birthMonth"),
+    birthDay: document.getElementById("birthDay"),
+    addressPrefecture: document.getElementById("addressPrefecture"),
+    addressCity: document.getElementById("addressCity"),
+    addressStreet: document.getElementById("addressStreet"),
+    addressBuilding: document.getElementById("addressBuilding"),
+    phone: document.getElementById("phone"),
+    relationship: document.getElementById("relationship"),
+    clinic: document.getElementById("clinic"),
+    practitioner1: document.getElementById("practitioner1"),
+    practitioner2: document.getElementById("practitioner2"),
+    day1: document.getElementById("day1"),
+    day2: document.getElementById("day2"),
+    day3: document.getElementById("day3"),
+    firstVisitDate: document.getElementById("firstVisitDate"),
+    insurerNumberSelect: document.getElementById("insurerNumberSelect"),
+    insurerNumberNew: document.getElementById("insurerNumberNew"),
+    insuredSymbolNumber: document.getElementById("insuredSymbolNumber"),
+    recipientNumber: document.getElementById("recipientNumber"),
+    publicExpensePayerNumber: document.getElementById("publicExpensePayerNumber"),
+    publicExpenseRecipientNumber: document.getElementById("publicExpenseRecipientNumber"),
+    copayRatio: document.getElementById("copayRatio"),
+  };
+  const areaInputGroup = document.getElementById("areaInputGroup");
+  const areaNumberInputs = areaInputGroup.querySelectorAll(".area-number-input");
+  const backButton = document.getElementById("backButton");
+  const saveUserButton = document.getElementById("saveUserButton");
+  const cancelEditButton = document.getElementById("cancelEditButton");
+  const formHeading = document.getElementById("formHeading");
+  const toast = document.getElementById("toast");
+
+  let editingId = null;
+
+  let toastTimer = null;
+  function showToast(message) {
+    toast.textContent = message;
+    toast.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove("show"), 2500);
+  }
+
+  function clearForm() {
+    Object.values(fields).forEach((el) => (el.value = ""));
+    areaNumberInputs.forEach((input) => (input.value = ""));
+    resetAddressFields();
+    fields.insurerNumberNew.hidden = true;
+    renderInsurerOptions("");
+  }
+
+  function getAreaValues() {
+    const result = {};
+    areaNumberInputs.forEach((input) => {
+      const value = input.value.trim();
+      if (value) result[input.dataset.area] = value;
+    });
+    return result;
+  }
+
+  function setAreaValues(areas) {
+    areas = areas || {};
+    areaNumberInputs.forEach((input) => {
+      input.value = areas[input.dataset.area] || "";
+    });
+  }
+
+  // フリガナは入力した瞬間にひらがな→カタカナへ自動変換する
+  function toKatakana(str) {
+    return str.replace(/[ぁ-ゖ]/g, (ch) => String.fromCharCode(ch.charCodeAt(0) + 0x60));
+  }
+  fields.kana.addEventListener("input", () => {
+    const pos = fields.kana.selectionStart;
+    const converted = toKatakana(fields.kana.value);
+    if (converted !== fields.kana.value) {
+      fields.kana.value = converted;
+      if (pos !== null) fields.kana.setSelectionRange(pos, pos);
+    }
+  });
+
+  [fields.birthYear, fields.birthMonth, fields.birthDay].forEach((input) => {
+    input.addEventListener("input", () => {
+      input.value = input.value.replace(/[^0-9]/g, "");
+    });
+  });
+
+  function getBirthDateValue() {
+    const y = fields.birthYear.value.trim();
+    const m = fields.birthMonth.value.trim();
+    const d = fields.birthDay.value.trim();
+    if (!y || !m || !d) return "";
+    return `${y.padStart(4, "0")}-${m.padStart(2, "0")}-${d.padStart(2, "0")}`;
+  }
+
+  function setBirthDateFields(dateStr) {
+    const parts = (dateStr || "").split("-");
+    fields.birthYear.value = parts[0] ? String(Number(parts[0])) : "";
+    fields.birthMonth.value = parts[1] ? String(Number(parts[1])) : "";
+    fields.birthDay.value = parts[2] ? String(Number(parts[2])) : "";
+  }
+
+  const DEFAULT_PREFECTURE = "山口県";
+  const DEFAULT_CITY = "下関市";
+
+  function getAddressValue() {
+    return (
+      fields.addressPrefecture.value.trim() +
+      fields.addressCity.value.trim() +
+      fields.addressStreet.value.trim() +
+      fields.addressBuilding.value.trim()
+    );
+  }
+
+  function resetAddressFields() {
+    fields.addressPrefecture.value = DEFAULT_PREFECTURE;
+    fields.addressCity.value = DEFAULT_CITY;
+    fields.addressStreet.value = "";
+    fields.addressBuilding.value = "";
+  }
+
+  function setAddressFields(address) {
+    let rest = (address || "").trim();
+    if (rest.startsWith(DEFAULT_PREFECTURE + DEFAULT_CITY)) {
+      rest = rest.slice((DEFAULT_PREFECTURE + DEFAULT_CITY).length);
+    } else if (rest.startsWith(DEFAULT_PREFECTURE)) {
+      rest = rest.slice(DEFAULT_PREFECTURE.length);
+    }
+    fields.addressPrefecture.value = DEFAULT_PREFECTURE;
+    fields.addressCity.value = DEFAULT_CITY;
+    fields.addressStreet.value = rest;
+    fields.addressBuilding.value = "";
+  }
+
+  // 保険者番号は登録制：既存の番号は次回からプルダウンで選べる
+  let insurerNumbers = [];
+
+  function renderInsurerOptions(selectedValue) {
+    const select = fields.insurerNumberSelect;
+    const current = selectedValue !== undefined ? selectedValue : select.value;
+    select.innerHTML = "";
+    const emptyOpt = document.createElement("option");
+    emptyOpt.value = "";
+    emptyOpt.textContent = "選択してください";
+    select.appendChild(emptyOpt);
+    insurerNumbers.forEach((i) => {
+      const opt = document.createElement("option");
+      opt.value = i.number;
+      opt.textContent = i.number;
+      select.appendChild(opt);
+    });
+    const newOpt = document.createElement("option");
+    newOpt.value = "__new__";
+    newOpt.textContent = "＋ 新しい保険者番号を登録";
+    select.appendChild(newOpt);
+    select.value = current;
+  }
+
+  async function loadInsurers() {
+    try {
+      insurerNumbers = await apiGet("/api/insurers");
+    } catch (err) {
+      showToast(err.message);
+      insurerNumbers = [];
+    }
+    renderInsurerOptions();
+  }
+
+  fields.insurerNumberSelect.addEventListener("change", () => {
+    if (fields.insurerNumberSelect.value === "__new__") {
+      fields.insurerNumberNew.hidden = false;
+      fields.insurerNumberNew.focus();
+    } else {
+      fields.insurerNumberNew.hidden = true;
+      fields.insurerNumberNew.value = "";
+    }
+  });
+
+  function getInsurerNumberValue() {
+    if (fields.insurerNumberSelect.value === "__new__") {
+      return fields.insurerNumberNew.value.trim();
+    }
+    return fields.insurerNumberSelect.value;
+  }
+
+  function setInsurerNumberField(number) {
+    number = (number || "").trim();
+    if (!number || insurerNumbers.some((i) => i.number === number)) {
+      renderInsurerOptions(number);
+      fields.insurerNumberNew.hidden = true;
+      fields.insurerNumberNew.value = "";
+    } else {
+      renderInsurerOptions("__new__");
+      fields.insurerNumberNew.hidden = false;
+      fields.insurerNumberNew.value = number;
+    }
+  }
+
+  async function loadClinics() {
+    let clinics = [];
+    try {
+      clinics = await apiGet("/api/clinics");
+    } catch (err) {
+      showToast(err.message);
+    }
+    clinics.forEach((c) => {
+      const opt = document.createElement("option");
+      opt.value = c.name;
+      opt.textContent = c.name;
+      fields.clinic.appendChild(opt);
+    });
+  }
+
+  async function loadPractitioners() {
+    let staff = [];
+    try {
+      staff = await apiGet("/api/staff");
+    } catch (err) {
+      showToast(err.message);
+    }
+    staff.forEach((s) => {
+      [fields.practitioner1, fields.practitioner2].forEach((select) => {
+        const opt = document.createElement("option");
+        opt.value = s.name;
+        opt.textContent = s.name;
+        select.appendChild(opt);
+      });
+    });
+  }
+
+  const DAYS = ["月", "火", "水", "木", "金", "土", "日"];
+  function loadDayOptions() {
+    [fields.day1, fields.day2, fields.day3].forEach((select) => {
+      DAYS.forEach((day) => {
+        const opt = document.createElement("option");
+        opt.value = day;
+        opt.textContent = day + "曜";
+        select.appendChild(opt);
+      });
+    });
+  }
+
+  function enterEditMode(user) {
+    editingId = user.id;
+    fields.name.value = user.name || "";
+    fields.kana.value = user.kana || "";
+    fields.gender.value = user.gender || "";
+    setBirthDateFields(user.birthDate);
+    setAddressFields(user.address);
+    fields.phone.value = user.phone || "";
+    fields.relationship.value = user.relationship || "";
+    fields.clinic.value = user.clinic || "";
+    fields.practitioner1.value = user.practitioner1 || "";
+    fields.practitioner2.value = user.practitioner2 || "";
+    fields.day1.value = user.day1 || "";
+    fields.day2.value = user.day2 || "";
+    fields.day3.value = user.day3 || "";
+    fields.firstVisitDate.value = user.firstVisitDate || "";
+    setInsurerNumberField(user.insurerNumber);
+    fields.insuredSymbolNumber.value = user.insuredSymbolNumber || "";
+    fields.recipientNumber.value = user.recipientNumber || "";
+    fields.publicExpensePayerNumber.value = user.publicExpensePayerNumber || "";
+    fields.publicExpenseRecipientNumber.value = user.publicExpenseRecipientNumber || "";
+    fields.copayRatio.value = user.copayRatio || "";
+    setAreaValues(user.areas);
+    formHeading.textContent = "顧客を編集する";
+    saveUserButton.textContent = "✅ この内容で更新する";
+    cancelEditButton.hidden = false;
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  cancelEditButton.addEventListener("click", () => {
+    location.href = "customer-list.html";
+  });
+
+  async function loadEditingUser(id) {
+    let users;
+    try {
+      users = await apiGet("/api/users");
+    } catch (err) {
+      showToast(err.message);
+      return;
+    }
+    const user = users.find((u) => u.id === id);
+    if (!user) {
+      showToast("対象の顧客が見つかりません");
+      return;
+    }
+    enterEditMode(user);
+  }
+
+  function goBack() {
+    if (history.length > 1) {
+      history.back();
+    } else {
+      window.close();
+      setTimeout(() => { location.href = "index.html"; }, 300);
+    }
+  }
+
+  backButton.addEventListener("click", goBack);
+
+  saveUserButton.addEventListener("click", async () => {
+    const name = fields.name.value.trim();
+    if (!name) {
+      showToast("名前を入力してください");
+      fields.name.focus();
+      return;
+    }
+    saveUserButton.disabled = true;
+    const insurerNumber = getInsurerNumberValue();
+    const body = {
+      name,
+      kana: fields.kana.value.trim(),
+      gender: fields.gender.value,
+      birthDate: getBirthDateValue(),
+      address: getAddressValue(),
+      phone: fields.phone.value.trim(),
+      relationship: fields.relationship.value,
+      clinic: fields.clinic.value,
+      practitioner1: fields.practitioner1.value,
+      practitioner2: fields.practitioner2.value,
+      day1: fields.day1.value,
+      day2: fields.day2.value,
+      day3: fields.day3.value,
+      firstVisitDate: fields.firstVisitDate.value,
+      insurerNumber,
+      insuredSymbolNumber: fields.insuredSymbolNumber.value.trim(),
+      recipientNumber: fields.recipientNumber.value.trim(),
+      publicExpensePayerNumber: fields.publicExpensePayerNumber.value.trim(),
+      publicExpenseRecipientNumber: fields.publicExpenseRecipientNumber.value.trim(),
+      copayRatio: fields.copayRatio.value,
+      areas: getAreaValues(),
+    };
+    try {
+      if (insurerNumber && !insurerNumbers.some((i) => i.number === insurerNumber)) {
+        try {
+          const created = await apiSend("/api/insurers", "POST", { number: insurerNumber });
+          insurerNumbers.push(created);
+        } catch (err) {
+          // 登録リストへの追加に失敗しても、顧客登録自体は続行する
+        }
+      }
+      if (editingId) {
+        await apiSend(`/api/users/${editingId}`, "PUT", body);
+        showToast("更新しました");
+        setTimeout(() => { location.href = "customer-list.html"; }, 600);
+      } else {
+        await apiSend("/api/users", "POST", body);
+        showToast("登録しました");
+        clearForm();
+      }
+    } catch (err) {
+      showToast(err.message);
+    } finally {
+      saveUserButton.disabled = false;
+    }
+  });
+
+  loadClinics();
+  loadPractitioners();
+  loadDayOptions();
+
+  const editId = new URLSearchParams(location.search).get("id");
+  loadInsurers().then(() => {
+    if (editId) loadEditingUser(editId);
+  });
+</script>
+</body>
+</html>

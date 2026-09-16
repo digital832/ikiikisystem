@@ -498,6 +498,54 @@ body {
   font-family: inherit;
 }
 
+.date-part-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.date-part-input {
+  width: 76px;
+  flex: none;
+  padding: 12px 10px;
+  font-size: 17px;
+  text-align: center;
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-input);
+  color: var(--text);
+  font-family: inherit;
+}
+
+.date-part-input.year {
+  width: 92px;
+}
+
+.date-part-input:focus {
+  outline: none;
+  border-color: var(--blue);
+  background: var(--card-bg);
+}
+
+.date-part-unit {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.address-part-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.registry-select-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 .area-number-input:focus {
   outline: none;
   border-color: var(--blue);
