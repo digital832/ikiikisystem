@@ -11,6 +11,20 @@
 
   <div class="topbar">
     <a href="index.html" class="app-title">🌿 いきいき治療院<span class="app-title-sub">顧客登録</span></a>
+    <div class="topbar-buttons">
+      <div class="menu-dropdown">
+        <button class="menu-button menu-trigger" type="button" id="menuTriggerButton" aria-haspopup="true" aria-expanded="false">☰ メニュー</button>
+        <div class="menu-panel" id="menuPanel" hidden>
+          <a class="menu-item" href="consent.html" target="_blank" rel="noopener">📝 同意書登録</a>
+          <a class="menu-item" href="customer-new.html" target="_blank" rel="noopener">📝 顧客登録</a>
+          <a class="menu-item" href="customer-list.html" target="_blank" rel="noopener">👥 顧客一覧</a>
+          <a class="menu-item" href="clinic-list.html" target="_blank" rel="noopener">🏥 施術所一覧</a>
+          <a class="menu-item" href="practitioner-list.html" target="_blank" rel="noopener">💆 施術師一覧</a>
+          <a class="menu-item" href="employee-list.html" target="_blank" rel="noopener">🧑‍💼 スタッフ一覧</a>
+          <a class="menu-item" href="fee-settings.html" target="_blank" rel="noopener">💰 保険料金設定</a>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="wizard-grid">
@@ -143,15 +157,11 @@
 
       <div class="field">
         <label class="field-label" for="insurerNumberSelect">保険者番号</label>
-        <div class="registry-select-group">
+        <div class="facility-select-row">
           <select class="select-input" id="insurerNumberSelect">
             <option value="">選択してください</option>
-            <option value="__new__">＋ 新しい保険者番号を登録</option>
           </select>
-          <div class="registry-new-group" id="insurerNewGroup" hidden>
-            <input class="text-input" type="text" id="insurerNameNew" placeholder="保険者名（例：山口県後期高齢者医療広域連合）" />
-            <input class="text-input" type="text" id="insurerNumberNew" inputmode="numeric" placeholder="保険者番号（例：39352018）" />
-          </div>
+          <button class="facility-add-button" type="button" id="newInsurerButton">＋ 新規登録</button>
         </div>
       </div>
 
@@ -195,8 +205,28 @@
 
 </div>
 
+<div class="sheet-overlay" id="newInsurerOverlay">
+  <div class="sheet-panel">
+    <div class="sheet-handle"></div>
+    <p class="card-heading">新しい保険者番号を登録</p>
+    <div class="field">
+      <label class="field-label" for="insurerNameNew">保険者名</label>
+      <input class="text-input" type="text" id="insurerNameNew" placeholder="例：山口県後期高齢者医療広域連合" />
+    </div>
+    <div class="field">
+      <label class="field-label" for="insurerNumberNew">保険者番号<span class="required">必須</span></label>
+      <input class="text-input" type="text" id="insurerNumberNew" inputmode="numeric" placeholder="例：39352018" />
+    </div>
+    <div class="sheet-actions">
+      <button class="word-button" type="button" id="cancelNewInsurerButton">キャンセル</button>
+      <button class="send-button" type="button" id="saveNewInsurerButton">登録する</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
+<script src="menu.js"></script>
 <script>
   async function apiGet(url) {
     const res = await fetch(url);
@@ -235,8 +265,6 @@
     day3: document.getElementById("day3"),
     firstVisitDate: document.getElementById("firstVisitDate"),
     insurerNumberSelect: document.getElementById("insurerNumberSelect"),
-    insurerNameNew: document.getElementById("insurerNameNew"),
-    insurerNumberNew: document.getElementById("insurerNumberNew"),
     insuredSymbolNumber: document.getElementById("insuredSymbolNumber"),
     recipientNumber: document.getElementById("recipientNumber"),
     publicExpensePayerNumber: document.getElementById("publicExpensePayerNumber"),
@@ -245,7 +273,12 @@
   };
   const areaInputGroup = document.getElementById("areaInputGroup");
   const areaNumberInputs = areaInputGroup.querySelectorAll(".area-number-input");
-  const insurerNewGroup = document.getElementById("insurerNewGroup");
+  const newInsurerOverlay = document.getElementById("newInsurerOverlay");
+  const newInsurerButton = document.getElementById("newInsurerButton");
+  const insurerNameNew = document.getElementById("insurerNameNew");
+  const insurerNumberNew = document.getElementById("insurerNumberNew");
+  const cancelNewInsurerButton = document.getElementById("cancelNewInsurerButton");
+  const saveNewInsurerButton = document.getElementById("saveNewInsurerButton");
   const backButton = document.getElementById("backButton");
   const saveUserButton = document.getElementById("saveUserButton");
   const cancelEditButton = document.getElementById("cancelEditButton");
@@ -266,8 +299,15 @@
     Object.values(fields).forEach((el) => (el.value = ""));
     areaNumberInputs.forEach((input) => (input.value = ""));
     resetAddressFields();
-    insurerNewGroup.hidden = true;
     renderInsurerOptions("");
+  }
+
+  function openSheet(overlay) {
+    overlay.classList.add("open");
+  }
+
+  function closeSheet(overlay) {
+    overlay.classList.remove("open");
   }
 
   function getAreaValues() {
@@ -352,7 +392,7 @@
     fields.addressBuilding.value = "";
   }
 
-  // 保険者番号は登録制：既存の番号は次回からプルダウンで選べる
+  // 保険者番号は登録制：新規登録はフォーム（シート）で行い、以後はプルダウンから選ぶ
   let insurerNumbers = [];
 
   function renderInsurerOptions(selectedValue) {
@@ -369,10 +409,13 @@
       opt.textContent = i.name ? `${i.name}｜${i.number}` : i.number;
       select.appendChild(opt);
     });
-    const newOpt = document.createElement("option");
-    newOpt.value = "__new__";
-    newOpt.textContent = "＋ 新しい保険者番号を登録";
-    select.appendChild(newOpt);
+    // 登録リストに無い値（編集対象が過去の未登録データの場合）も表示だけできるようにしておく
+    if (current && !insurerNumbers.some((i) => i.number === current)) {
+      const legacyOpt = document.createElement("option");
+      legacyOpt.value = current;
+      legacyOpt.textContent = `（未登録）${current}`;
+      select.appendChild(legacyOpt);
+    }
     select.value = current;
   }
 
@@ -386,37 +429,47 @@
     renderInsurerOptions();
   }
 
-  fields.insurerNumberSelect.addEventListener("change", () => {
-    if (fields.insurerNumberSelect.value === "__new__") {
-      insurerNewGroup.hidden = false;
-      fields.insurerNameNew.focus();
-    } else {
-      insurerNewGroup.hidden = true;
-      fields.insurerNameNew.value = "";
-      fields.insurerNumberNew.value = "";
+  newInsurerButton.addEventListener("click", () => {
+    insurerNameNew.value = "";
+    insurerNumberNew.value = "";
+    openSheet(newInsurerOverlay);
+    insurerNameNew.focus();
+  });
+
+  cancelNewInsurerButton.addEventListener("click", () => closeSheet(newInsurerOverlay));
+
+  newInsurerOverlay.addEventListener("click", (e) => {
+    if (e.target === newInsurerOverlay) closeSheet(newInsurerOverlay);
+  });
+
+  saveNewInsurerButton.addEventListener("click", async () => {
+    const name = insurerNameNew.value.trim();
+    const number = insurerNumberNew.value.trim();
+    if (!number) {
+      showToast("保険者番号を入力してください");
+      insurerNumberNew.focus();
+      return;
+    }
+    saveNewInsurerButton.disabled = true;
+    try {
+      const created = await apiSend("/api/insurers", "POST", { name, number });
+      insurerNumbers.push(created);
+      renderInsurerOptions(created.number);
+      closeSheet(newInsurerOverlay);
+      showToast("保険者番号を登録しました");
+    } catch (err) {
+      showToast(err.message);
+    } finally {
+      saveNewInsurerButton.disabled = false;
     }
   });
 
   function getInsurerNumberValue() {
-    if (fields.insurerNumberSelect.value === "__new__") {
-      return fields.insurerNumberNew.value.trim();
-    }
     return fields.insurerNumberSelect.value;
   }
 
   function setInsurerNumberField(number) {
-    number = (number || "").trim();
-    if (!number || insurerNumbers.some((i) => i.number === number)) {
-      renderInsurerOptions(number);
-      insurerNewGroup.hidden = true;
-      fields.insurerNameNew.value = "";
-      fields.insurerNumberNew.value = "";
-    } else {
-      renderInsurerOptions("__new__");
-      insurerNewGroup.hidden = false;
-      fields.insurerNameNew.value = "";
-      fields.insurerNumberNew.value = number;
-    }
+    renderInsurerOptions((number || "").trim());
   }
 
   async function loadClinics() {
@@ -556,14 +609,6 @@
       areas: getAreaValues(),
     };
     try {
-      if (insurerNumber && !insurerNumbers.some((i) => i.number === insurerNumber)) {
-        try {
-          const created = await apiSend("/api/insurers", "POST", { name: fields.insurerNameNew.value.trim(), number: insurerNumber });
-          insurerNumbers.push(created);
-        } catch (err) {
-          // 登録リストへの追加に失敗しても、顧客登録自体は続行する
-        }
-      }
       if (editingId) {
         await apiSend(`/api/users/${editingId}`, "PUT", body);
         showToast("更新しました");
